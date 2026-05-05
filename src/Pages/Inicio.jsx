@@ -1,12 +1,10 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import useCounter from "../hooks/useCounter";
 import AnimSection from "../components/AnimSection";
-import SkillBar from "../components/SkillBar";
 import ProjectCard from "../components/ProjectCard";
 import "../css/Inicio.css";
 import {
-  skills,
-  projects,
+  destinations,
   services,
   navLinks,
   categories,
@@ -15,28 +13,24 @@ import {
   statsData,
 } from "../data/portfolioData";
 
-export default function Portfolio() {
+export default function TravelCatalog() {
   const [activeNav, setActiveNav] = useState("inicio");
   const [scrolled, setScrolled] = useState(false);
-  const [hoveredSkill, setHoveredSkill] = useState(null);
   const [filterCategory, setFilterCategory] = useState("todos");
   const [showContactForm, setShowContactForm] = useState(false);
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
-  
-  const statsRef = useRef(null);
-  const statsInView = useCounter(1, 1);
-  const projectCount = useCounter(statsData[0].value, 1500);
-  const techCount = useCounter(statsData[1].value, 1500);
-  const experienceYears = useCounter(statsData[2].value, 1500);
-  const clientsCount = useCounter(statsData[3].value, 1500);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const statsInViewActual = true;
+  const destCount = useCounter(statsData[0].value, 1500);
+  const clientCount = useCounter(statsData[1].value, 1500);
+  const experienceYears = useCounter(statsData[2].value, 1500);
+  const tourCount = useCounter(statsData[3].value, 1500);
 
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
-      
-      const sections = ["inicio", "sobre", "habilidades", "proyectos", "contacto"];
+
+      const sections = ["inicio", "destinos", "servicios", "contacto"];
       for (const section of sections) {
         const element = document.getElementById(section);
         if (element) {
@@ -59,20 +53,21 @@ export default function Portfolio() {
       const elementPosition = element.offsetTop - offset;
       window.scrollTo({ top: elementPosition, behavior: "smooth" });
       setActiveNav(id);
+      setMobileMenuOpen(false);
     }
   }, []);
 
-  const filteredProjects = filterCategory === "todos" 
-    ? projects 
-    : filterCategory === "destacados" 
-      ? projects.filter(p => p.highlight)
-      : projects.filter(p => p.category.toLowerCase() === filterCategory.toLowerCase());
+  const filteredDestinations = filterCategory === "todos"
+    ? destinations
+    : filterCategory === "destacados"
+      ? destinations.filter(p => p.highlight)
+      : destinations.filter(p => p.category.toLowerCase() === filterCategory.toLowerCase());
 
   const stats = [
-    { label: statsData[0].label, value: projectCount, suffix: statsData[0].suffix },
-    { label: statsData[1].label, value: techCount, suffix: statsData[1].suffix },
+    { label: statsData[0].label, value: destCount, suffix: statsData[0].suffix },
+    { label: statsData[1].label, value: clientCount, suffix: statsData[1].suffix },
     { label: statsData[2].label, value: experienceYears, suffix: statsData[2].suffix },
-    { label: statsData[3].label, value: clientsCount, suffix: statsData[3].suffix },
+    { label: statsData[3].label, value: tourCount, suffix: statsData[3].suffix },
   ];
 
   return (
@@ -82,24 +77,24 @@ export default function Portfolio() {
       {/* ========== NAVBAR ========== */}
       <header className={`header ${scrolled ? 'scrolled' : ''}`}>
         <div className="header-container">
-          <button 
-            onClick={() => scrollTo("inicio")} 
+          <button
+            onClick={() => scrollTo("inicio")}
             className="logo-button"
           >
             <div className="logo-avatar">
-              JC
+              🌎
             </div>
             <div>
               <div className="logo-text">
-                Josue <span>Castillo</span>
+                Turismo<span>Honduras</span>
               </div>
               <div className="logo-subtitle">
-                Full Stack Developer
+                Agencia de Viajes
               </div>
             </div>
           </button>
 
-          <nav className={`nav ${scrolled ? 'scrolled' : ''}`}>
+          <nav className={`nav ${scrolled ? 'scrolled' : ''} ${mobileMenuOpen ? 'nav-open' : ''}`}>
             {navLinks.map(({ id, label, icon }) => (
               <button
                 key={id}
@@ -112,8 +107,23 @@ export default function Portfolio() {
             ))}
           </nav>
 
-       
+          <button
+            className={`hamburger ${mobileMenuOpen ? 'hamburger-active' : ''}`}
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label="Toggle menu"
+          >
+            <span />
+            <span />
+            <span />
+          </button>
         </div>
+
+        {mobileMenuOpen && (
+          <div
+            className="mobile-overlay"
+            onClick={() => setMobileMenuOpen(false)}
+          />
+        )}
       </header>
 
       {/* ========== HERO SECTION ========== */}
@@ -129,22 +139,23 @@ export default function Portfolio() {
             <div className="status-badge">
               <div className="status-dot" />
               <span className="status-text">
-                DISPONIBLE PARA NUEVOS PROYECTOS
+                OFERTAS ESPECIALES DISPONIBLES
               </span>
             </div>
 
             <h1 className="hero-title">
-              Desarrollador{" "}
-              <span>Full Stack</span>
+              Descubre{" "}
+              <span>
+                Honduras
+              </span>
               <br />
               <span className="hero-subtitle">
-                y Creativo Digital
+                Tu próxima aventura te espera
               </span>
             </h1>
 
             <p className="hero-description">
-              Transformo ideas en experiencias digitales excepcionales.
-              Especializado en <strong>React</strong>, <strong>Laravel</strong> y tecnologías modernas.
+              Más de <strong>15 años</strong> creando experiencias inolvidables. Vuelos, hoteles y tours a los mejores destinos con precios exclusivos.
             </p>
 
             <div className="social-links">
@@ -165,7 +176,7 @@ export default function Portfolio() {
               {stats.map(stat => (
                 <div key={stat.label} className="stat-item">
                   <div className="stat-value">
-                    {statsInViewActual ? stat.value : 0}{stat.suffix}
+                    {stat.value}{stat.suffix}
                   </div>
                   <div className="stat-label">{stat.label}</div>
                 </div>
@@ -176,15 +187,15 @@ export default function Portfolio() {
           <AnimSection delay={200}>
             <div className="hero-image-container">
               <div className="hero-image-bg" />
-              
               <div className="hero-image-wrapper">
                 <div className="hero-image-inner">
                   <img
-                    src="/daniel.png"
-                    alt="Josue Castillo"
+                    src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1200&auto=format&fit=crop"
+                    alt="Honduras Beach"
                     className="hero-image"
                     onError={(e) => {
-                      e.target.src = "https://ui-avatars.com/api/?name=Josue+Castillo&background=3B82F6&color=fff&size=380";
+                      e.target.src =
+                        "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1200&auto=format&fit=crop";
                     }}
                   />
                 </div>
@@ -193,52 +204,79 @@ export default function Portfolio() {
               <div className="hero-badge1">
                 <div className="hero-badge1-content">
                   <div className="hero-badge1-dot" />
-                  <span className="hero-badge1-text">Open to work</span>
+                  <span className="hero-badge1-text">Ofertas activas</span>
                 </div>
               </div>
 
               <div className="hero-badge2">
-                <span className="hero-badge2-text">⚛️ React • 🔷 Laravel</span>
+                <span className="hero-badge2-text">✈️ Tours • 🏨 Hoteles</span>
               </div>
             </div>
           </AnimSection>
         </div>
       </section>
 
-      {/* ========== SOBRE MÍ SECTION ========== */}
-      <section id="sobre" className="about-section">
+      {/* ========== DESTINOS SECTION ========== */}
+      <section id="destinos" className="projects-section">
+        <div className="projects-container">
+          <AnimSection className="projects-header">
+            <div className="projects-badge">
+              DESTINOS
+            </div>
+            <h2 className="projects-title">
+              Explora los{" "}
+              <span>
+                mejores lugares
+              </span>
+            </h2>
+            <p className="projects-description">
+              Descubre los destinos más fascinantes de Honduras y el mundo
+            </p>
+          </AnimSection>
+
+          <AnimSection delay={100} className="filter-buttons">
+            {categories.map(cat => (
+              <button
+                key={cat}
+                onClick={() => setFilterCategory(cat)}
+                className={`filter-button ${filterCategory === cat ? 'active' : ''}`}
+              >
+                {cat === "todos" ? "🌎 Todos" : cat === "destacados" ? "⭐ Destacados" : cat === "Playa" ? "🏖️ Playa" : cat === "Cultural" ? "🏛️ Cultural" : cat === "Naturaleza" ? "🌳 Naturaleza" : "🧗 Aventura"}
+              </button>
+            ))}
+          </AnimSection>
+
+          <div className="projects-grid">
+            {filteredDestinations.map((dest, idx) => (
+              <ProjectCard key={dest.title} project={dest} index={idx} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ========== SERVICIOS SECTION ========== */}
+      <section id="servicios" className="about-section">
         <div className="about-container">
           <AnimSection className="about-header">
             <div className="about-badge">
-              SOBRE MÍ
+              SERVICIOS
             </div>
             <h2 className="about-title">
-              Apasionado por crear{" "}
+              Todo lo que necesitas para{" "}
               <span>
-                soluciones innovadoras
-              </span>{" "}
-              que transforman negocios
+                tu viaje
+              </span>
             </h2>
             <p className="about-description">
-              Con más de 3 años de experiencia en desarrollo full stack, me especializo en crear aplicaciones web y móviles escalables, eficientes y con una experiencia de usuario excepcional.
+              Ofrecemos servicios integrales de turismo con la mejor atención y precios competitivos para hacer de tu viaje una experiencia inolvidable.
             </p>
           </AnimSection>
 
           <div className="services-grid">
             {services.map((service, idx) => (
               <AnimSection key={service.title} delay={idx * 100}>
-                <div
-                  className="service-card"
-                  onMouseEnter={e => {
-                    e.currentTarget.style.transform = "translateY(-8px)";
-                    e.currentTarget.style.borderColor = `${service.accent}40`;
-                  }}
-                  onMouseLeave={e => {
-                    e.currentTarget.style.transform = "translateY(0)";
-                    e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)";
-                  }}
-                >
-                  <div className="service-icon" style={{ background: `${service.accent}15`, borderColor: `${service.accent}40` }}>
+                <div className="service-card">
+                  <div className="service-icon" style={{ fontSize: "32px" }}>
                     {service.icon}
                   </div>
                   <h3 className="service-title">
@@ -249,88 +287,11 @@ export default function Portfolio() {
                   </p>
                   <div className="service-features">
                     {service.features.map(f => (
-                      <span key={f} className="service-feature" style={{ color: service.accent, background: `${service.accent}10` }}>✓ {f}</span>
+                      <span key={f} className="service-feature" style={{ color: service.accent, background: `${service.accent}15` }}>✓ {f}</span>
                     ))}
                   </div>
                 </div>
               </AnimSection>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ========== HABILIDADES SECTION ========== */}
-      <section id="habilidades" className="skills-section">
-        <div className="skills-container">
-          <AnimSection className="skills-header">
-            <div className="skills-badge">
-              TECNOLOGÍAS
-            </div>
-            <h2 className="skills-title">
-              Stack que{" "}
-              <span>
-                domino
-              </span>
-            </h2>
-          </AnimSection>
-
-          <div className="skills-grid">
-            {skills.map((skill, idx) => (
-              <SkillBar
-                key={skill.name}
-                skill={skill}
-                index={idx}
-                isHovered={hoveredSkill}
-                onHover={setHoveredSkill}
-              />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ========== PROYECTOS SECTION ========== */}
-      <section id="proyectos" className="projects-section">
-        <div className="projects-container">
-          <AnimSection className="projects-header">
-            <div className="projects-badge">
-              PORTAFOLIO
-            </div>
-            <h2 className="projects-title">
-              Mis{" "}
-              <span>
-                mejores proyectos
-              </span>
-            </h2>
-            <p className="projects-description">
-              Trabajos recientes que reflejan mi pasión por el código de calidad
-            </p>
-          </AnimSection>
-
-          <AnimSection delay={100} className="filter-buttons">
-            {categories.map(cat => (
-              <button
-                key={cat}
-                onClick={() => setFilterCategory(cat)}
-                className={`filter-button ${filterCategory === cat ? 'active' : ''}`}
-                onMouseEnter={e => {
-                  if (filterCategory !== cat) {
-                    e.target.style.background = "rgba(255,255,255,0.1)";
-                  }
-                }}
-                onMouseLeave={e => {
-                  if (filterCategory !== cat) {
-                    e.target.style.background = "rgba(255,255,255,0.05)";
-                  }
-                }}
-              >
-                {cat === "todos" ? "📋 Todos" : cat === "destacados" ? "⭐ Destacados" : cat}
-              </button>
-            ))}
-          </AnimSection>
-
-          <div className="projects-grid">
-            {filteredProjects.map((project, idx) => (
-              <ProjectCard key={project.title} project={project} index={idx} />
             ))}
           </div>
         </div>
@@ -348,14 +309,13 @@ export default function Portfolio() {
               CONTACTO
             </div>
             <h2 className="contact-title">
-              ¿Tienes un{" "}
+              ¿Listo para tu{" "}
               <span>
-                proyecto
-              </span>{" "}
-              en mente?
+                próxima aventura?
+              </span>
             </h2>
             <p className="contact-description">
-              Hablemos y hagámoslo realidad juntos
+              Contáctanos y cotiza tu viaje soñado
             </p>
           </AnimSection>
 
@@ -368,16 +328,8 @@ export default function Portfolio() {
                     target={contact.action.startsWith("http") ? "_blank" : "_self"}
                     rel="noopener noreferrer"
                     className="contact-card"
-                    onMouseEnter={e => {
-                      e.currentTarget.style.transform = "translateY(-4px)";
-                      e.currentTarget.style.borderColor = `${contact.color}40`;
-                    }}
-                    onMouseLeave={e => {
-                      e.currentTarget.style.transform = "translateY(0)";
-                      e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)";
-                    }}
                   >
-                    <div className="contact-icon" style={{ background: `${contact.color}15`, borderColor: `${contact.color}40` }}>
+                    <div className="contact-icon">
                       {contact.icon}
                     </div>
                     <h3 className="contact-title-card">
@@ -388,18 +340,8 @@ export default function Portfolio() {
                     </p>
                   </a>
                 ) : (
-                  <div
-                    className="contact-card"
-                    onMouseEnter={e => {
-                      e.currentTarget.style.transform = "translateY(-4px)";
-                      e.currentTarget.style.borderColor = `${contact.color}40`;
-                    }}
-                    onMouseLeave={e => {
-                      e.currentTarget.style.transform = "translateY(0)";
-                      e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)";
-                    }}
-                  >
-                    <div className="contact-icon" style={{ background: `${contact.color}15`, borderColor: `${contact.color}40` }}>
+                  <div className="contact-card">
+                    <div className="contact-icon">
                       {contact.icon}
                     </div>
                     <h3 className="contact-title-card">
@@ -418,106 +360,47 @@ export default function Portfolio() {
             <button
               onClick={() => setShowContactForm(!showContactForm)}
               className="contact-form-button"
-              onMouseEnter={e => {
-                e.target.style.transform = "translateY(-2px)";
-                e.target.style.boxShadow = "0 12px 40px rgba(99,102,241,0.5)";
-              }}
-              onMouseLeave={e => {
-                e.target.style.transform = "translateY(0)";
-                e.target.style.boxShadow = "0 8px 32px rgba(99,102,241,0.4)";
-              }}
             >
-              💬 {showContactForm ? "Ocultar formulario" : "Enviar mensaje directo"}
+              💬 {showContactForm ? "Ocultar formulario" : "Cotizar mi viaje"}
             </button>
           </AnimSection>
 
           {showContactForm && (
-            <AnimSection delay={300} style={{ marginTop: "48px", maxWidth: "600px", marginLeft: "auto", marginRight: "auto" }}>
-              <div style={{
-                background: "linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03))",
-                border: "1px solid rgba(255,255,255,0.1)",
-                borderRadius: "32px",
-                padding: "40px",
-              }}>
-                <h3 style={{ fontSize: "24px", fontWeight: 800, marginBottom: "24px", textAlign: "center" }}>
-                  Cuéntame sobre tu proyecto
+            <AnimSection delay={300} className="contact-form-wrapper">
+              <div className="contact-form-container">
+                <h3 className="contact-form-title">
+                  Cuéntanos sobre tu viaje ideal
                 </h3>
-                <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+                <div className="contact-form-fields">
                   <input
                     type="text"
                     placeholder="Tu nombre"
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    style={{
-                      background: "rgba(255,255,255,0.05)",
-                      border: "1px solid rgba(255,255,255,0.1)",
-                      borderRadius: "16px",
-                      padding: "16px 20px",
-                      fontSize: "14px",
-                      color: "#fff",
-                      outline: "none",
-                      transition: "all 0.3s ease",
-                    }}
-                    onFocus={e => e.target.style.borderColor = "#3B82F6"}
-                    onBlur={e => e.target.style.borderColor = "rgba(255,255,255,0.1)"}
+                    className="contact-input"
                   />
                   <input
                     type="email"
                     placeholder="Tu email"
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    style={{
-                      background: "rgba(255,255,255,0.05)",
-                      border: "1px solid rgba(255,255,255,0.1)",
-                      borderRadius: "16px",
-                      padding: "16px 20px",
-                      fontSize: "14px",
-                      color: "#fff",
-                      outline: "none",
-                      transition: "all 0.3s ease",
-                    }}
-                    onFocus={e => e.target.style.borderColor = "#3B82F6"}
-                    onBlur={e => e.target.style.borderColor = "rgba(255,255,255,0.1)"}
+                    className="contact-input"
                   />
                   <textarea
-                    placeholder="Descripción del proyecto..."
+                    placeholder="¿A dónde te gustaría viajar? ¿Cuándo? ¿Cuántas personas?"
                     rows="4"
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    style={{
-                      background: "rgba(255,255,255,0.05)",
-                      border: "1px solid rgba(255,255,255,0.1)",
-                      borderRadius: "16px",
-                      padding: "16px 20px",
-                      fontSize: "14px",
-                      color: "#fff",
-                      outline: "none",
-                      resize: "vertical",
-                      fontFamily: "inherit",
-                    }}
-                    onFocus={e => e.target.style.borderColor = "#3B82F6"}
-                    onBlur={e => e.target.style.borderColor = "rgba(255,255,255,0.1)"}
+                    className="contact-textarea"
                   />
                   <button
                     onClick={() => {
-                      const whatsappMessage = `Hola Josue! Me llamo ${formData.name}.%0A%0A${formData.message}%0A%0AMi email: ${formData.email}`;
-                      window.open(`https://wa.me/50558249298?text=${whatsappMessage}`, "_blank");
+                      const whatsappMessage = `Hola! Me llamo ${formData.name}.%0A%0A${formData.message}%0A%0AMi email: ${formData.email}`;
+                      window.open(`https://wa.me/50498765432?text=${whatsappMessage}`, "_blank");
                       setFormData({ name: "", email: "", message: "" });
                       setShowContactForm(false);
                     }}
-                    style={{
-                      background: "linear-gradient(135deg, #22C55E, #16A34A)",
-                      color: "#fff",
-                      border: "none",
-                      borderRadius: "16px",
-                      padding: "16px",
-                      fontSize: "14px",
-                      fontWeight: 700,
-                      cursor: "pointer",
-                      transition: "all 0.3s ease",
-                    }}
-                    onMouseEnter={e => e.target.style.transform = "translateY(-2px)"}
-                    onMouseLeave={e => e.target.style.transform = "translateY(0)"}
+                    className="contact-submit"
                   >
                     Enviar por WhatsApp 💬
                   </button>
@@ -529,40 +412,21 @@ export default function Portfolio() {
       </section>
 
       {/* ========== FOOTER ========== */}
-      <footer style={{
-        borderTop: "1px solid rgba(255,255,255,0.06)",
-        padding: "40px 5%",
-        textAlign: "center",
-        background: "rgba(0,0,0,0.3)",
-      }}>
-        <div style={{ maxWidth: "1400px", margin: "0 auto" }}>
-          <div style={{ display: "flex", justifyContent: "center", gap: "32px", marginBottom: "24px", flexWrap: "wrap" }}>
+      <footer className="footer">
+        <div className="footer-container">
+          <div className="footer-nav">
             {navLinks.map(link => (
               <button
                 key={link.id}
                 onClick={() => scrollTo(link.id)}
-                style={{
-                  background: "none",
-                  border: "none",
-                  color: "rgba(255,255,255,0.5)",
-                  fontSize: "13px",
-                  fontWeight: 500,
-                  cursor: "pointer",
-                  transition: "color 0.3s ease",
-                }}
-                onMouseEnter={e => e.target.style.color = "#fff"}
-                onMouseLeave={e => e.target.style.color = "rgba(255,255,255,0.5)"}
+                className="footer-link"
               >
                 {link.label}
               </button>
             ))}
           </div>
-          <p style={{
-            fontSize: "13px",
-            color: "rgba(255,255,255,0.3)",
-            fontFamily: "'DM Sans', sans-serif",
-          }}>
-            © 2025 Josue Castillo · Desarrollador Full Stack · Todos los derechos reservados
+          <p className="footer-text">
+            © 2026 TurismoHonduras · Agencia de Viajes · Todos los derechos reservados
           </p>
         </div>
       </footer>

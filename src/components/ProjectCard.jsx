@@ -5,10 +5,11 @@ export default function ProjectCard({ project, index }) {
   const [isHovered, setIsHovered] = useState(false);
   const ref = useRef(null);
   const inView = useInView(ref, 0.2);
-  
+
   return (
     <div
       ref={ref}
+      className="project-card"
       style={{
         opacity: inView ? 1 : 0,
         transform: inView ? "translateY(0)" : "translateY(30px)",
@@ -16,6 +17,7 @@ export default function ProjectCard({ project, index }) {
       }}
     >
       <div
+        className="project-card-inner"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         style={{
@@ -28,7 +30,7 @@ export default function ProjectCard({ project, index }) {
           boxShadow: isHovered ? "0 25px 40px -12px rgba(0,0,0,0.5)" : "none",
         }}
       >
-        <div style={{ position: "relative", height: "260px", overflow: "hidden" }}>
+        <div className="project-card-image">
           <img
             src={project.img}
             alt={project.title}
@@ -45,67 +47,44 @@ export default function ProjectCard({ project, index }) {
             inset: 0,
             background: "linear-gradient(to top, rgba(5,5,8,0.95) 0%, transparent 50%)",
           }} />
-          <div style={{ position: "absolute", top: "20px", left: "20px", display: "flex", gap: "12px" }}>
-            <span style={{
-              background: "rgba(0,0,0,0.8)",
-              backdropFilter: "blur(10px)",
-              padding: "6px 14px",
-              borderRadius: "20px",
-              fontSize: "11px",
-              fontWeight: 700,
-              color: "#fff",
-              letterSpacing: "0.5px",
-            }}>{project.category}</span>
+          <div className="project-card-badges">
+            <span className="project-card-category">{project.category}</span>
             {project.highlight && (
-              <span style={{
-                background: "linear-gradient(135deg, #3B82F6, #8B5CF6)",
-                padding: "6px 14px",
-                borderRadius: "20px",
-                fontSize: "11px",
-                fontWeight: 700,
-                color: "#fff",
-              }}>⭐ Destacado</span>
+              <span className="project-card-featured">⭐ Recomendado</span>
             )}
           </div>
-          <div style={{ position: "absolute", bottom: "20px", right: "20px", fontSize: "12px", color: "rgba(255,255,255,0.5)" }}>
-            {project.year}
+          <div className="project-card-year" style={{ background: "linear-gradient(135deg, #3B82F6, #06B6D4)" }}>
+            {project.price}
           </div>
         </div>
-        <div style={{ padding: "28px" }}>
-          <h3 style={{ fontSize: "22px", fontWeight: 800, marginBottom: "12px", letterSpacing: "-0.5px" }}>
-            {project.title}
-          </h3>
-          <p style={{ fontSize: "14px", color: "rgba(255,255,255,0.6)", lineHeight: "1.6", marginBottom: "20px" }}>
+        <div className="project-card-content">
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px" }}>
+            <h3 className="project-card-title" style={{ margin: 0 }}>
+              {project.title}
+            </h3>
+            <span style={{
+              background: "rgba(6,182,212,0.15)",
+              color: "#06B6D4",
+              padding: "4px 12px",
+              borderRadius: "20px",
+              fontSize: "12px",
+              fontWeight: 600,
+            }}>
+              {project.duration}
+            </span>
+          </div>
+          <p className="project-card-desc">
             {project.desc}
           </p>
-          <div style={{ marginBottom: "20px" }}>
-            <div style={{ fontSize: "12px", color: "rgba(255,255,255,0.4)", marginBottom: "8px", fontWeight: 600 }}>
-              CARACTERÍSTICAS
+          <div className="project-card-features-section">
+            <div className="project-card-features-label">
+              INCLUYE
             </div>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+            <div className="project-card-features">
               {project.features.map(f => (
-                <span key={f} style={{
-                  fontSize: "11px",
-                  color: "#60A5FA",
-                  background: "rgba(59,130,246,0.1)",
-                  padding: "4px 10px",
-                  borderRadius: "12px",
-                }}>✓ {f}</span>
+                <span key={f} className="project-card-feature" style={{ color: "#06B6D4", background: "rgba(6,182,212,0.1)" }}>✓ {f}</span>
               ))}
             </div>
-          </div>
-          <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
-            {project.tech.map(tech => (
-              <span key={tech} style={{
-                background: "rgba(255,255,255,0.05)",
-                border: "1px solid rgba(255,255,255,0.1)",
-                padding: "6px 14px",
-                borderRadius: "20px",
-                fontSize: "11px",
-                fontWeight: 600,
-                color: "#CBD5E1",
-              }}>{tech}</span>
-            ))}
           </div>
         </div>
       </div>

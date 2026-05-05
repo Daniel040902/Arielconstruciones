@@ -1,115 +1,122 @@
-export const skills = [
-  { name: "React", level: 92, color: "#61DAFB", bg: "#0d1f2d", icon: "⚛️", years: "3+ años" },
-  { name: "Laravel", level: 88, color: "#FF2D20", bg: "#1f0d0d", icon: "🔷", years: "2+ años" },
-  { name: "Node.js", level: 85, color: "#68A063", bg: "#0d1a10", icon: "🟢", years: "2+ años" },
-  { name: "MySQL", level: 87, color: "#4479A1", bg: "#0d1320", icon: "🐬", years: "3+ años" },
-  { name: "PostgreSQL", level: 83, color: "#336791", bg: "#0d1520", icon: "🐘", years: "2+ años" },
-  { name: "Kotlin", level: 75, color: "#7F52FF", bg: "#160d20", icon: "📱", years: "1+ año" },
-  { name: "Tailwind CSS", level: 93, color: "#38BDF8", bg: "#0d1a20", icon: "🎨", years: "3+ años" },
-  { name: "Git & GitHub", level: 90, color: "#F05032", bg: "#1f120d", icon: "📦", years: "3+ años" },
-  { name: "Docker", level: 72, color: "#2496ED", bg: "#0d1520", icon: "🐳", years: "1+ año" },
-];
-
-export const projects = [
+export const destinations = [
   {
-    title: "Directorio de Vinculación",
-    category: "Full Stack",
-    desc: "Sistema web para registrar, buscar, editar e importar información académica y laboral con reportes avanzados.",
-    img: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1200&auto=format&fit=crop",
-    tech: ["React", "Laravel", "PostgreSQL"],
+    title: "Islas de la Bahía, Roatán",
+    category: "Playa",
+    desc: "Descubre las aguas cristalinas y arrecifes de coral más bellos del Caribe hondureño.",
+    img: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?q=80&w=1200&auto=format&fit=crop",
+    price: "$899",
+    duration: "7 días",
     highlight: true,
-    year: "2024",
-    features: ["CRUD completo", "Importación masiva", "Reportes PDF", "Dashboard analítico"]
+    features: ["Snorkel incluido", "Hotel todo incluido", "Vuelos directos", "Guía turístico"]
   },
   {
-    title: "Sistema de Sublimación",
-    category: "Empresarial",
-    desc: "Gestión completa de inventario, ventas, clientes, pedidos, proveedores y reportes financieros.",
-    img: "https://images.unsplash.com/photo-1556740749-887f6717d7e4?q=80&w=1200&auto=format&fit=crop",
-    tech: ["React", "Node.js", "MySQL"],
+    title: "Copán Ruinas",
+    category: "Cultural",
+    desc: "Explora la fascinante civilización Maya en uno de los sitios arqueológicos más importantes.",
+    img: "https://images.unsplash.com/photo-1526392060635-9d6019884377?q=80&w=1200&auto=format&fit=crop",
+    price: "$650",
+    duration: "5 días",
     highlight: false,
-    year: "2024",
-    features: ["Inventario en tiempo real", "Múltiples usuarios", "Facturación", "Dashboard ejecutivo"]
+    features: ["Tour arqueológico", "Hotel boutique", "Transporte", "Desayunos incluidos"]
   },
   {
-    title: "App Android Lista Compras",
-    category: "Android",
-    desc: "Aplicación móvil con CRUD completo, SQLite, menús desplegables y diseño moderno en Kotlin.",
-    img: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?q=80&w=1200&auto=format&fit=crop",
-    tech: ["Kotlin", "SQLite", "Android"],
+    title: "Lago de Yojoa",
+    category: "Naturaleza",
+    desc: "El lago más grande de Honduras rodeado de montañas, aves exóticas y cascadas impresionantes.",
+    img: "https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=1200&auto=format&fit=crop",
+    price: "$450",
+    duration: "4 días",
     highlight: false,
-    year: "2023",
-    features: ["Modo offline", "Categorías personalizables", "Exportar listas", "Widgets"]
+    features: ["Avistamiento de aves", "Caminatas", "Pesca deportiva", "Ecoturismo"]
   },
   {
-    title: "Catálogo Google Sheets",
-    category: "Frontend",
-    desc: "Catálogo dinámico conectado a Google Sheets con Apps Script para actualización en tiempo real.",
-    img: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1200&auto=format&fit=crop",
-    tech: ["React", "Apps Script", "Tailwind"],
+    title: "Pico Bonito",
+    category: "Aventura",
+    desc: "Vive la adrenalina en uno de los parques nacionales más biodiversos con rapids y canopy.",
+    img: "https://images.unsplash.com/photo-1551632811-561732d1e306?q=80&w=1200&auto=format&fit=crop",
+    price: "$750",
+    duration: "6 días",
+    highlight: true,
+    features: ["Rafting", "Canopy", "Caminatas", "Cabañas ecológicas"]
+  },
+  {
+    title: "Utila",
+    category: "Playa",
+    desc: "Paraíso para buceadores con los mejores precios para certificaciones PADI en el mundo.",
+    img: "https://images.unsplash.com/photo-1544550581-5f7ceaf7f992?q=80&w=1200&auto=format&fit=crop",
+    price: "$699",
+    duration: "5 días",
     highlight: false,
-    year: "2023",
-    features: ["Actualización automática", "Filtros avanzados", "Optimizado móvil", "Sin backend"]
+    features: ["Buceo PADI", "Avistamiento tiburones", "Hostales", "Vida nocturna"]
+  },
+  {
+    title: "La Ceiba",
+    category: "Aventura",
+    desc: "La capital de la aventura con el famoso carnaval y acceso a Pico Bonito.",
+    img: "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?q=80&w=1200&auto=format&fit=crop",
+    price: "$550",
+    duration: "4 días",
+    highlight: false,
+    features: ["Carnaval", "Río Cangrejal", "Rafting", "Gastronomía local"]
   },
 ];
 
 export const services = [
-  { 
-    icon: "⚛️", 
-    title: "Full Stack Web", 
-    desc: "Aplicaciones web modernas y escalables con React, Laravel y bases de datos robustas.",
+  {
+    icon: "✈️",
+    title: "Vuelos",
+    desc: "Los mejores precios en vuelos nacionales e internacionales con atención personalizada.",
     accent: "#3B82F6",
-    features: ["Rendimiento optimizado", "SEO avanzado", "PWA ready", "Seguridad implementada"]
+    features: ["Precios competitivos", "Vuelos charter", "Asistencia 24/7", "Cambios flexibles"]
   },
-  { 
-    icon: "🗄️", 
-    title: "Bases de Datos", 
-    desc: "Diseño, optimización y gestión de MySQL y PostgreSQL para máximo rendimiento.",
+  {
+    icon: "🏨",
+    title: "Hoteles",
+    desc: "Amplia selección de hoteles desde económicos hasta lujo, con las mejores tarifas.",
     accent: "#8B5CF6",
-    features: ["Normalización", "Optimización queries", "Backup automático", "Alta disponibilidad"]
+    features: ["Todos los presupuestos", "Reservas flexibles", "Desayuno incluido", "Ubicaciones premium"]
   },
-  { 
-    icon: "🔌", 
-    title: "APIs & Servicios", 
-    desc: "APIs REST seguras con autenticación JWT y documentación completa con Swagger.",
+  {
+    icon: "🚌",
+    title: "Transporte",
+    desc: "Transporte terrestre seguro y cómodo con choferes profesionales y vehículos modernos.",
     accent: "#10B981",
-    features: ["RESTful design", "Autenticación", "Rate limiting", "Documentación OpenAPI"]
+    features: ["Flota moderna", "Seguro incluido", "Conductores expertos", "Rutas personalizadas"]
   },
-  { 
-    icon: "📱", 
-    title: "Apps Móviles", 
-    desc: "Aplicaciones Android nativas con Kotlin y SQLite con experiencia de usuario premium.",
+  {
+    icon: "🎯",
+    title: "Tours Guiados",
+    desc: "Experiencias únicas con guías locales certificados y conocimiento profundo.",
     accent: "#F59E0B",
-    features: ["UI/UX moderna", "Offline first", "Push notifications", "Play Store deploy"]
+    features: ["Guías bilingües", "Grupos pequeños", "Rutas exclusivas", "Experiencias culturales"]
   },
 ];
 
 export const navLinks = [
   { id: "inicio", label: "Inicio", icon: "🏠" },
-  { id: "sobre", label: "Sobre mí", icon: "👤" },
-  { id: "habilidades", label: "Skills", icon: "⚡" },
-  { id: "proyectos", label: "Proyectos", icon: "📁" },
+  { id: "destinos", label: "Destinos", icon: "🌎" },
+  { id: "servicios", label: "Servicios", icon: "⚙️" },
   { id: "contacto", label: "Contacto", icon: "📧" },
 ];
 
-export const categories = ["todos", "Full Stack", "Empresarial", "Android", "Frontend", "destacados"];
+export const categories = ["todos", "Playa", "Cultural", "Naturaleza", "Aventura", "destacados"];
 
 export const contactInfo = [
-  { icon: "✉️", title: "Email", value: "josue.castillo@example.com", color: "#3B82F6", action: "mailto:josue.castillo@example.com" },
-  { icon: "💬", title: "WhatsApp", value: "+505 5824 9298", color: "#22C55E", action: "https://wa.me/50558249298" },
-  { icon: "📍", title: "Ubicación", value: "León, Nicaragua", color: "#8B5CF6", action: null },
-  { icon: "🐙", title: "GitHub", value: "/josuecastillo", color: "#fff", action: "https://github.com" },
+  { icon: "✉️", title: "Email", value: "info@turismohonduras.com", color: "#3B82F6", action: "mailto:info@turismohonduras.com" },
+  { icon: "💬", title: "WhatsApp", value: "+504 9876 5432", color: "#22C55E", action: "https://wa.me/50498765432" },
+  { icon: "📍", title: "Oficina", value: "Tegucigalpa, Honduras", color: "#8B5CF6", action: null },
+  { icon: "📞", title: "Teléfono", value: "+504 2234 5678", color: "#F59E0B", action: "tel:+50422345678" },
 ];
 
 export const socialLinks = [
-  { label: "GitHub", href: "https://github.com", icon: "🐙", color: "#fff" },
-  { label: "LinkedIn", href: "https://linkedin.com", icon: "💼", color: "#0A66C2" },
-  { label: "WhatsApp", href: "https://wa.me/50558249298", icon: "💬", color: "#25D366" },
+  { label: "Facebook", href: "https://facebook.com", icon: "📘", color: "#1877F2" },
+  { label: "Instagram", href: "https://instagram.com", icon: "📸", color: "#E4405F" },
+  { label: "WhatsApp", href: "https://wa.me/50498765432", icon: "💬", color: "#25D366" },
 ];
 
 export const statsData = [
-  { label: "Proyectos", value: 4, suffix: "+" },
-  { label: "Tecnologías", value: 9, suffix: "+" },
-  { label: "Experiencia", value: 3, suffix: "+ años" },
-  { label: "Clientes", value: 12, suffix: "+" },
+  { label: "Destinos", value: 50, suffix: "+" },
+  { label: "Clientes Felices", value: 1200, suffix: "+" },
+  { label: "Experiencia", value: 15, suffix: "+ años" },
+  { label: "Tours Diarios", value: 30, suffix: "+" },
 ];
