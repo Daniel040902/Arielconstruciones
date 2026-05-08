@@ -1,44 +1,839 @@
-import { useState, useEffect, useRef, useCallback } from "react";
-import useCounter from "../hooks/useCounter";
-import AnimSection from "../components/AnimSection";
-import ProjectCard from "../components/ProjectCard";
-import "../css/Inicio.css";
-import {
-  destinations,
-  services,
-  navLinks,
-  categories,
-  contactInfo,
-  socialLinks,
-  statsData,
-} from "../data/portfolioData";
+import { useState, useEffect, useCallback } from "react";
 
-export default function TravelCatalog() {
+const style = `
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap');
+
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #E8C97A;
+    --gold-dark: #9B7A28;
+    --dark: #0D0D0D;
+    --dark2: #141414;
+    --dark3: #1C1C1C;
+    --dark4: #242424;
+    --gray: #555;
+    --gray-light: #888;
+    --white: #F5F0E8;
+    --white2: #EDE8DC;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Barlow', sans-serif;
+    background: var(--dark);
+    color: var(--white);
+    overflow-x: hidden;
+  }
+
+  .ac-header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 0 5%;
+    height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: all 0.4s ease;
+  }
+
+  .ac-header.scrolled {
+    background: rgba(13,13,13,0.97);
+    border-bottom: 1px solid rgba(201,168,76,0.2);
+    backdrop-filter: blur(8px);
+  }
+
+  .ac-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  .ac-logo-icon {
+    width: 42px;
+    height: 42px;
+    background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  }
+
+  .ac-logo-text {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 2px;
+    color: var(--white);
+    line-height: 1;
+  }
+
+  .ac-logo-sub {
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--gold);
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  .ac-nav {
+    display: flex;
+    gap: 32px;
+  }
+
+  .ac-nav button {
+    background: none;
+    border: none;
+    color: var(--gray-light);
+    font-family: 'Barlow', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: color 0.3s;
+    padding: 4px 0;
+    position: relative;
+  }
+
+  .ac-nav button::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: var(--gold);
+    transition: width 0.3s;
+  }
+
+  .ac-nav button:hover, .ac-nav button.active {
+    color: var(--gold);
+  }
+
+  .ac-nav button:hover::after, .ac-nav button.active::after {
+    width: 100%;
+  }
+
+  .ac-cta-btn {
+    background: var(--gold);
+    color: var(--dark);
+    border: none;
+    font-family: 'Barlow', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 10px 24px;
+    cursor: pointer;
+    transition: all 0.3s;
+    clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+  }
+
+  .ac-cta-btn:hover {
+    background: var(--gold-light);
+    transform: translateY(-1px);
+  }
+
+  /* HERO */
+  .ac-hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    padding: 0 5%;
+  }
+
+  .ac-hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(135deg, rgba(201,168,76,0.04) 0%, transparent 50%),
+      repeating-linear-gradient(
+        90deg,
+        transparent,
+        transparent 80px,
+        rgba(201,168,76,0.03) 80px,
+        rgba(201,168,76,0.03) 81px
+      ),
+      repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 80px,
+        rgba(201,168,76,0.03) 80px,
+        rgba(201,168,76,0.03) 81px
+      );
+  }
+
+  .ac-hero-accent {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 45%;
+    height: 100%;
+    background: linear-gradient(135deg, transparent 0%, rgba(201,168,76,0.06) 100%);
+    clip-path: polygon(15% 0, 100% 0, 100% 100%, 0% 100%);
+  }
+
+  .ac-hero-number {
+    position: absolute;
+    right: 5%;
+    bottom: 10%;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 180px;
+    color: rgba(201,168,76,0.05);
+    line-height: 1;
+    letter-spacing: -10px;
+    user-select: none;
+  }
+
+  .ac-hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 700px;
+  }
+
+  .ac-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .ac-eyebrow-line {
+    width: 40px;
+    height: 1px;
+    background: var(--gold);
+  }
+
+  .ac-eyebrow-text {
+    font-size: 12px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 600;
+  }
+
+  .ac-hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(56px, 8vw, 100px);
+    line-height: 0.95;
+    letter-spacing: 3px;
+    margin-bottom: 8px;
+  }
+
+  .ac-hero-title span {
+    color: var(--gold);
+    display: block;
+  }
+
+  .ac-hero-owner {
+    font-size: 15px;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--gray-light);
+    margin-bottom: 28px;
+    letter-spacing: 1px;
+  }
+
+  .ac-hero-owner strong {
+    color: var(--white2);
+    font-style: normal;
+    font-weight: 600;
+  }
+
+  .ac-hero-desc {
+    font-size: 17px;
+    line-height: 1.7;
+    color: var(--gray-light);
+    max-width: 520px;
+    margin-bottom: 40px;
+    font-weight: 300;
+  }
+
+  .ac-hero-actions {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+  }
+
+  .ac-btn-primary {
+    background: var(--gold);
+    color: var(--dark);
+    border: none;
+    font-family: 'Barlow', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 16px 36px;
+    cursor: pointer;
+    transition: all 0.3s;
+    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+  }
+
+  .ac-btn-primary:hover {
+    background: var(--gold-light);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(201,168,76,0.3);
+  }
+
+  .ac-btn-outline {
+    background: transparent;
+    color: var(--white);
+    border: 1px solid rgba(255,255,255,0.2);
+    font-family: 'Barlow', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 16px 36px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .ac-btn-outline:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+
+  .ac-hero-stats {
+    display: flex;
+    gap: 48px;
+    margin-top: 56px;
+    padding-top: 40px;
+    border-top: 1px solid rgba(255,255,255,0.07);
+  }
+
+  .ac-stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 42px;
+    color: var(--gold);
+    letter-spacing: 2px;
+    line-height: 1;
+  }
+
+  .ac-stat-label {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gray);
+    margin-top: 4px;
+    font-weight: 500;
+  }
+
+  /* SECTION COMMON */
+  .ac-section {
+    padding: 100px 5%;
+  }
+
+  .ac-section-header {
+    margin-bottom: 64px;
+  }
+
+  .ac-section-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+
+  .ac-section-tag span {
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 600;
+  }
+
+  .ac-section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(36px, 5vw, 60px);
+    letter-spacing: 2px;
+    line-height: 1;
+    margin-bottom: 16px;
+  }
+
+  .ac-section-title em {
+    color: var(--gold);
+    font-style: normal;
+  }
+
+  .ac-section-desc {
+    font-size: 16px;
+    color: var(--gray-light);
+    max-width: 560px;
+    line-height: 1.7;
+    font-weight: 300;
+  }
+
+  /* SERVICIOS */
+  .ac-services-bg {
+    background: var(--dark2);
+  }
+
+  .ac-services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2px;
+  }
+
+  .ac-service-card {
+    background: var(--dark3);
+    padding: 40px 32px;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    overflow: hidden;
+  }
+
+  .ac-service-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(201,168,76,0.1), transparent);
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+
+  .ac-service-card:hover::before {
+    opacity: 1;
+  }
+
+  .ac-service-card:hover {
+    background: var(--dark4);
+    transform: translateY(-4px);
+  }
+
+  .ac-service-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--gold);
+    transition: width 0.4s;
+  }
+
+  .ac-service-card:hover::after {
+    width: 100%;
+  }
+
+  .ac-service-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 48px;
+    color: rgba(201,168,76,0.15);
+    line-height: 1;
+    margin-bottom: 16px;
+    letter-spacing: 2px;
+  }
+
+  .ac-service-icon {
+    font-size: 32px;
+    margin-bottom: 20px;
+    display: block;
+  }
+
+  .ac-service-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+    color: var(--white);
+  }
+
+  .ac-service-desc {
+    font-size: 14px;
+    color: var(--gray-light);
+    line-height: 1.7;
+    font-weight: 300;
+    margin-bottom: 16px;
+  }
+
+  .ac-service-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .ac-service-tag {
+    font-size: 11px;
+    letter-spacing: 1px;
+    padding: 4px 10px;
+    background: rgba(201,168,76,0.1);
+    color: var(--gold);
+    border: 1px solid rgba(201,168,76,0.2);
+    font-weight: 600;
+  }
+
+  /* PROYECTOS */
+  .ac-projects-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+  }
+
+  .ac-project-card {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 4/3;
+    cursor: pointer;
+  }
+
+  .ac-project-card.featured {
+    grid-row: span 2;
+    aspect-ratio: auto;
+  }
+
+  .ac-project-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+    filter: brightness(0.6);
+  }
+
+  .ac-project-card:hover .ac-project-img {
+    transform: scale(1.05);
+    filter: brightness(0.5);
+  }
+
+  .ac-project-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 60%);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 32px;
+  }
+
+  .ac-project-label {
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  .ac-project-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 2px;
+    color: var(--white);
+  }
+
+  /* NOSOTROS */
+  .ac-about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+
+  .ac-about-img-wrapper {
+    position: relative;
+  }
+
+  .ac-about-img {
+    width: 100%;
+    aspect-ratio: 3/4;
+    object-fit: cover;
+    filter: grayscale(30%) brightness(0.8);
+  }
+
+  .ac-about-img-accent {
+    position: absolute;
+    bottom: -20px;
+    right: -20px;
+    width: 60%;
+    height: 60%;
+    border: 2px solid var(--gold);
+    opacity: 0.3;
+    pointer-events: none;
+  }
+
+  .ac-about-badge {
+    position: absolute;
+    top: 24px;
+    left: -16px;
+    background: var(--gold);
+    color: var(--dark);
+    padding: 16px 24px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 14px;
+    letter-spacing: 2px;
+  }
+
+  .ac-about-values {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-top: 40px;
+  }
+
+  .ac-value-item {
+    border-left: 2px solid var(--gold);
+    padding-left: 16px;
+  }
+
+  .ac-value-name {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--white);
+    margin-bottom: 4px;
+  }
+
+  .ac-value-desc {
+    font-size: 13px;
+    color: var(--gray);
+    line-height: 1.5;
+    font-weight: 300;
+  }
+
+  /* CONTACTO */
+  .ac-contact-bg {
+    background: var(--dark2);
+  }
+
+  .ac-contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: start;
+  }
+
+  .ac-contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .ac-contact-item {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .ac-contact-icon-box {
+    width: 48px;
+    height: 48px;
+    background: rgba(201,168,76,0.1);
+    border: 1px solid rgba(201,168,76,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+
+  .ac-contact-label {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .ac-contact-value {
+    font-size: 15px;
+    color: var(--white2);
+    font-weight: 400;
+  }
+
+  .ac-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .ac-input, .ac-textarea {
+    background: var(--dark3);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: var(--white);
+    font-family: 'Barlow', sans-serif;
+    font-size: 14px;
+    padding: 16px 20px;
+    outline: none;
+    transition: border-color 0.3s;
+    width: 100%;
+    letter-spacing: 0.5px;
+  }
+
+  .ac-input:focus, .ac-textarea:focus {
+    border-color: var(--gold);
+  }
+
+  .ac-input::placeholder, .ac-textarea::placeholder {
+    color: var(--gray);
+  }
+
+  .ac-textarea {
+    resize: none;
+    min-height: 120px;
+  }
+
+  /* FOOTER */
+  .ac-footer {
+    background: var(--dark);
+    border-top: 1px solid rgba(255,255,255,0.06);
+    padding: 40px 5%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .ac-footer-text {
+    font-size: 13px;
+    color: var(--gray);
+    letter-spacing: 0.5px;
+  }
+
+  .ac-footer-links {
+    display: flex;
+    gap: 24px;
+  }
+
+  .ac-footer-links button {
+    background: none;
+    border: none;
+    color: var(--gray);
+    font-family: 'Barlow', sans-serif;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: color 0.3s;
+    font-weight: 500;
+  }
+
+  .ac-footer-links button:hover {
+    color: var(--gold);
+  }
+
+  /* GOLD LINE */
+  .ac-divider {
+    width: 40px;
+    height: 2px;
+    background: var(--gold);
+    margin-bottom: 12px;
+  }
+
+  /* MOBILE */
+  @media (max-width: 768px) {
+    .ac-nav, .ac-cta-btn { display: none; }
+    .ac-hero-stats { gap: 24px; flex-wrap: wrap; }
+    .ac-projects-grid { grid-template-columns: 1fr; }
+    .ac-project-card.featured { grid-row: auto; }
+    .ac-about-grid, .ac-contact-grid { grid-template-columns: 1fr; gap: 40px; }
+    .ac-footer { flex-direction: column; text-align: center; }
+  }
+`;
+
+const services = [
+  {
+    num: "01",
+    icon: "🖌️",
+    name: "Pintura",
+    desc: "Acabados de alta calidad en interior y exterior. Pintura lisa, texturizada, anticorrosiva y decorativa para todo tipo de superficies.",
+    tags: ["Interior", "Exterior", "Texturada", "Anticorrosiva"],
+  },
+  {
+    num: "02",
+    icon: "⬜",
+    name: "Cielo Raso",
+    desc: "Instalación profesional de cielos rasos en gypsum, PVC, y materiales compuestos. Diseños planos, con moldurados y coffered.",
+    tags: ["Gypsum", "PVC", "Moldurado", "Coffered"],
+  },
+  {
+    num: "03",
+    icon: "🧱",
+    name: "Repello & Fino",
+    desc: "Aplicación de repello y fino de paredes con mezclas balanceadas para superficies lisas y uniformes, listas para pintar.",
+    tags: ["Repello", "Fino", "Afinado", "Nivelación"],
+  },
+  {
+    num: "04",
+    icon: "🪟",
+    name: "Divisiones & Tabiques",
+    desc: "Construcción de tabiques en gypsum, vidrio templado o PVC para espacios de oficina, comerciales o residenciales.",
+    tags: ["Gypsum", "Vidrio", "PVC", "Oficinas"],
+  },
+  {
+    num: "05",
+    icon: "🏗️",
+    name: "Construcción General",
+    desc: "Obra civil desde cero: cimientos, levantado de paredes, columnas, vigas y estructura completa con materiales certificados.",
+    tags: ["Cimientos", "Paredes", "Columnas", "Vigas"],
+  },
+  {
+    num: "06",
+    icon: "🔌",
+    name: "Instalaciones",
+    desc: "Instalaciones eléctricas, hidráulicas y sanitarias con técnicos certificados para proyectos residenciales y comerciales.",
+    tags: ["Eléctrica", "Hidráulica", "Sanitaria", "Certificada"],
+  },
+  {
+    num: "07",
+    icon: "🪵",
+    name: "Pisos & Revestimientos",
+    desc: "Colocación de pisos cerámicos, porcelanato, madera y revestimiento de paredes para baños y cocinas.",
+    tags: ["Cerámica", "Porcelanato", "Madera", "Baños"],
+  },
+  {
+    num: "08",
+    icon: "🏠",
+    name: "Remodelaciones",
+    desc: "Renovación integral de espacios residenciales y comerciales. Transformamos cualquier ambiente con calidad garantizada.",
+    tags: ["Residencial", "Comercial", "Integral", "Garantizado"],
+  },
+  {
+    num: "09",
+    icon: "📐",
+    name: "Impermeabilización",
+    desc: "Sistemas de impermeabilización en terrazas, losas y fundaciones para protección duradera contra filtraciones y humedad.",
+    tags: ["Terrazas", "Losas", "Fundaciones", "Durable"],
+  },
+];
+
+const projects = [
+  { label: "Residencial", title: "Residencia San Pedro", img: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80", featured: true },
+  { label: "Comercial", title: "Edificio Corporativo", img: "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=800&q=80" },
+  { label: "Remodelación", title: "Interior Moderno", img: "https://images.unsplash.com/photo-1600566752355-35792bedcfea?w=800&q=80" },
+  { label: "Industrial", title: "Bodega Industrial", img: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&q=80" },
+];
+
+const navLinks = [
+  { id: "inicio", label: "Inicio" },
+  { id: "servicios", label: "Servicios" },
+  { id: "proyectos", label: "Proyectos" },
+  { id: "nosotros", label: "Nosotros" },
+  { id: "contacto", label: "Contacto" },
+];
+
+export default function ArielConstrucciones() {
   const [activeNav, setActiveNav] = useState("inicio");
   const [scrolled, setScrolled] = useState(false);
-  const [filterCategory, setFilterCategory] = useState("todos");
-  const [showContactForm, setShowContactForm] = useState(false);
-  const [formData, setFormData] = useState({ name: "", email: "", message: "" });
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
-  const destCount = useCounter(statsData[0].value, 1500);
-  const clientCount = useCounter(statsData[1].value, 1500);
-  const experienceYears = useCounter(statsData[2].value, 1500);
-  const tourCount = useCounter(statsData[3].value, 1500);
+  const [formData, setFormData] = useState({ name: "", phone: "", service: "", message: "" });
 
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
-
-      const sections = ["inicio", "destinos", "servicios", "contacto"];
-      for (const section of sections) {
-        const element = document.getElementById(section);
-        if (element) {
-          const rect = element.getBoundingClientRect();
-          if (rect.top <= 100 && rect.bottom >= 100) {
-            setActiveNav(section);
-            break;
-          }
+      for (const { id } of navLinks) {
+        const el = document.getElementById(id);
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          if (rect.top <= 120 && rect.bottom >= 120) { setActiveNav(id); break; }
         }
       }
     };
@@ -47,387 +842,228 @@ export default function TravelCatalog() {
   }, []);
 
   const scrollTo = useCallback((id) => {
-    const element = document.getElementById(id);
-    if (element) {
-      const offset = 80;
-      const elementPosition = element.offsetTop - offset;
-      window.scrollTo({ top: elementPosition, behavior: "smooth" });
+    const el = document.getElementById(id);
+    if (el) {
+      window.scrollTo({ top: el.offsetTop - 72, behavior: "smooth" });
       setActiveNav(id);
-      setMobileMenuOpen(false);
     }
   }, []);
 
-  const filteredDestinations = filterCategory === "todos"
-    ? destinations
-    : filterCategory === "destacados"
-      ? destinations.filter(p => p.highlight)
-      : destinations.filter(p => p.category.toLowerCase() === filterCategory.toLowerCase());
-
-  const stats = [
-    { label: statsData[0].label, value: destCount, suffix: statsData[0].suffix },
-    { label: statsData[1].label, value: clientCount, suffix: statsData[1].suffix },
-    { label: statsData[2].label, value: experienceYears, suffix: statsData[2].suffix },
-    { label: statsData[3].label, value: tourCount, suffix: statsData[3].suffix },
-  ];
+  const sendWhatsApp = () => {
+    const msg = `Hola Ariel Construcciones!%0A%0A*Nombre:* ${formData.name}%0A*Teléfono:* ${formData.phone}%0A*Servicio:* ${formData.service}%0A*Mensaje:* ${formData.message}`;
+    window.open(`https://wa.me/50498765432?text=${msg}`, "_blank");
+  };
 
   return (
-    <div className="portfolio">
-      <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <div style={{ fontFamily: "'Barlow', sans-serif" }}>
+      <style>{style}</style>
 
-      {/* ========== NAVBAR ========== */}
-      <header className={`header ${scrolled ? 'scrolled' : ''}`}>
-        <div className="header-container">
-          <button
-            onClick={() => scrollTo("inicio")}
-            className="logo-button"
-          >
-            <div className="logo-avatar">
-              🌎
-            </div>
-            <div>
-              <div className="logo-text">
-                Turismo<span>Honduras</span>
-              </div>
-              <div className="logo-subtitle">
-                Agencia de Viajes
-              </div>
-            </div>
-          </button>
-
-          <nav className={`nav ${scrolled ? 'scrolled' : ''} ${mobileMenuOpen ? 'nav-open' : ''}`}>
-            {navLinks.map(({ id, label, icon }) => (
-              <button
-                key={id}
-                onClick={() => scrollTo(id)}
-                className={`nav-button ${activeNav === id ? 'active' : ''}`}
-              >
-                <span>{icon}</span>
-                <span>{label}</span>
-              </button>
-            ))}
-          </nav>
-
-          <button
-            className={`hamburger ${mobileMenuOpen ? 'hamburger-active' : ''}`}
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label="Toggle menu"
-          >
-            <span />
-            <span />
-            <span />
-          </button>
+      {/* HEADER */}
+      <header className={`ac-header ${scrolled ? "scrolled" : ""}`}>
+        <div className="ac-logo" onClick={() => scrollTo("inicio")}>
+          <div className="ac-logo-icon">🏗️</div>
+          <div>
+            <div className="ac-logo-text">Ariel <span style={{ color: "var(--gold)" }}>Construcciones</span></div>
+            <div className="ac-logo-sub">Ariel Rojas Torres</div>
+          </div>
         </div>
-
-        {mobileMenuOpen && (
-          <div
-            className="mobile-overlay"
-            onClick={() => setMobileMenuOpen(false)}
-          />
-        )}
+        <nav className="ac-nav">
+          {navLinks.map(({ id, label }) => (
+            <button key={id} onClick={() => scrollTo(id)} className={activeNav === id ? "active" : ""}>{label}</button>
+          ))}
+        </nav>
+        <button className="ac-cta-btn" onClick={() => scrollTo("contacto")}>Cotizar</button>
       </header>
 
-      {/* ========== HERO SECTION ========== */}
-      <section id="inicio" className="hero-section">
-        <div className="hero-bg">
-          <div className="hero-bg-circle1" />
-          <div className="hero-bg-circle2" />
-          <div className="hero-bg-dots" />
-        </div>
-
-        <div className="hero-container">
-          <AnimSection>
-            <div className="status-badge">
-              <div className="status-dot" />
-              <span className="status-text">
-                OFERTAS ESPECIALES DISPONIBLES
-              </span>
-            </div>
-
-            <h1 className="hero-title">
-              Descubre{" "}
-              <span>
-                Honduras
-              </span>
-              <br />
-              <span className="hero-subtitle">
-                Tu próxima aventura te espera
-              </span>
-            </h1>
-
-            <p className="hero-description">
-              Más de <strong>15 años</strong> creando experiencias inolvidables. Vuelos, hoteles y tours a los mejores destinos con precios exclusivos.
-            </p>
-
-            <div className="social-links">
-              {socialLinks.map(btn => (
-                <a
-                  key={btn.label}
-                  href={btn.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="social-link"
-                >
-                  {btn.icon} {btn.label}
-                </a>
-              ))}
-            </div>
-
-            <div className="stats-grid">
-              {stats.map(stat => (
-                <div key={stat.label} className="stat-item">
-                  <div className="stat-value">
-                    {stat.value}{stat.suffix}
-                  </div>
-                  <div className="stat-label">{stat.label}</div>
-                </div>
-              ))}
-            </div>
-          </AnimSection>
-
-          <AnimSection delay={200}>
-            <div className="hero-image-container">
-              <div className="hero-image-bg" />
-              <div className="hero-image-wrapper">
-                <div className="hero-image-inner">
-                  <img
-                    src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1200&auto=format&fit=crop"
-                    alt="Honduras Beach"
-                    className="hero-image"
-                    onError={(e) => {
-                      e.target.src =
-                        "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1200&auto=format&fit=crop";
-                    }}
-                  />
-                </div>
-              </div>
-
-              <div className="hero-badge1">
-                <div className="hero-badge1-content">
-                  <div className="hero-badge1-dot" />
-                  <span className="hero-badge1-text">Ofertas activas</span>
-                </div>
-              </div>
-
-              <div className="hero-badge2">
-                <span className="hero-badge2-text">✈️ Tours • 🏨 Hoteles</span>
-              </div>
-            </div>
-          </AnimSection>
-        </div>
-      </section>
-
-      {/* ========== DESTINOS SECTION ========== */}
-      <section id="destinos" className="projects-section">
-        <div className="projects-container">
-          <AnimSection className="projects-header">
-            <div className="projects-badge">
-              DESTINOS
-            </div>
-            <h2 className="projects-title">
-              Explora los{" "}
-              <span>
-                mejores lugares
-              </span>
-            </h2>
-            <p className="projects-description">
-              Descubre los destinos más fascinantes de Honduras y el mundo
-            </p>
-          </AnimSection>
-
-          <AnimSection delay={100} className="filter-buttons">
-            {categories.map(cat => (
-              <button
-                key={cat}
-                onClick={() => setFilterCategory(cat)}
-                className={`filter-button ${filterCategory === cat ? 'active' : ''}`}
-              >
-                {cat === "todos" ? "🌎 Todos" : cat === "destacados" ? "⭐ Destacados" : cat === "Playa" ? "🏖️ Playa" : cat === "Cultural" ? "🏛️ Cultural" : cat === "Naturaleza" ? "🌳 Naturaleza" : "🧗 Aventura"}
-              </button>
-            ))}
-          </AnimSection>
-
-          <div className="projects-grid">
-            {filteredDestinations.map((dest, idx) => (
-              <ProjectCard key={dest.title} project={dest} index={idx} />
-            ))}
+      {/* HERO */}
+      <section id="inicio" className="ac-hero">
+        <div className="ac-hero-bg" />
+        <div className="ac-hero-accent" />
+        <div className="ac-hero-number">2009</div>
+        <div className="ac-hero-content">
+          <div className="ac-eyebrow">
+            <div className="ac-eyebrow-line" />
+            <span className="ac-eyebrow-text">Empresa de Construcción Certificada</span>
           </div>
-        </div>
-      </section>
-
-      {/* ========== SERVICIOS SECTION ========== */}
-      <section id="servicios" className="about-section">
-        <div className="about-container">
-          <AnimSection className="about-header">
-            <div className="about-badge">
-              SERVICIOS
-            </div>
-            <h2 className="about-title">
-              Todo lo que necesitas para{" "}
-              <span>
-                tu viaje
-              </span>
-            </h2>
-            <p className="about-description">
-              Ofrecemos servicios integrales de turismo con la mejor atención y precios competitivos para hacer de tu viaje una experiencia inolvidable.
-            </p>
-          </AnimSection>
-
-          <div className="services-grid">
-            {services.map((service, idx) => (
-              <AnimSection key={service.title} delay={idx * 100}>
-                <div className="service-card">
-                  <div className="service-icon" style={{ fontSize: "32px" }}>
-                    {service.icon}
-                  </div>
-                  <h3 className="service-title">
-                    {service.title}
-                  </h3>
-                  <p className="service-description">
-                    {service.desc}
-                  </p>
-                  <div className="service-features">
-                    {service.features.map(f => (
-                      <span key={f} className="service-feature" style={{ color: service.accent, background: `${service.accent}15` }}>✓ {f}</span>
-                    ))}
-                  </div>
-                </div>
-              </AnimSection>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ========== CONTACTO SECTION ========== */}
-      <section id="contacto" className="contact-section">
-        <div className="contact-bg">
-          <div className="contact-bg-circle" />
-        </div>
-
-        <div className="contact-container">
-          <AnimSection className="contact-header">
-            <div className="contact-badge">
-              CONTACTO
-            </div>
-            <h2 className="contact-title">
-              ¿Listo para tu{" "}
-              <span>
-                próxima aventura?
-              </span>
-            </h2>
-            <p className="contact-description">
-              Contáctanos y cotiza tu viaje soñado
-            </p>
-          </AnimSection>
-
-          <div className="contact-grid">
-            {contactInfo.map((contact, idx) => (
-              <AnimSection key={contact.title} delay={idx * 80}>
-                {contact.action ? (
-                  <a
-                    href={contact.action}
-                    target={contact.action.startsWith("http") ? "_blank" : "_self"}
-                    rel="noopener noreferrer"
-                    className="contact-card"
-                  >
-                    <div className="contact-icon">
-                      {contact.icon}
-                    </div>
-                    <h3 className="contact-title-card">
-                      {contact.title}
-                    </h3>
-                    <p className="contact-value" style={{ color: contact.color }}>
-                      {contact.value}
-                    </p>
-                  </a>
-                ) : (
-                  <div className="contact-card">
-                    <div className="contact-icon">
-                      {contact.icon}
-                    </div>
-                    <h3 className="contact-title-card">
-                      {contact.title}
-                    </h3>
-                    <p className="contact-value" style={{ color: contact.color }}>
-                      {contact.value}
-                    </p>
-                  </div>
-                )}
-              </AnimSection>
-            ))}
-          </div>
-
-          <AnimSection delay={200} className="contact-form-toggle">
-            <button
-              onClick={() => setShowContactForm(!showContactForm)}
-              className="contact-form-button"
-            >
-              💬 {showContactForm ? "Ocultar formulario" : "Cotizar mi viaje"}
-            </button>
-          </AnimSection>
-
-          {showContactForm && (
-            <AnimSection delay={300} className="contact-form-wrapper">
-              <div className="contact-form-container">
-                <h3 className="contact-form-title">
-                  Cuéntanos sobre tu viaje ideal
-                </h3>
-                <div className="contact-form-fields">
-                  <input
-                    type="text"
-                    placeholder="Tu nombre"
-                    value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="contact-input"
-                  />
-                  <input
-                    type="email"
-                    placeholder="Tu email"
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="contact-input"
-                  />
-                  <textarea
-                    placeholder="¿A dónde te gustaría viajar? ¿Cuándo? ¿Cuántas personas?"
-                    rows="4"
-                    value={formData.message}
-                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    className="contact-textarea"
-                  />
-                  <button
-                    onClick={() => {
-                      const whatsappMessage = `Hola! Me llamo ${formData.name}.%0A%0A${formData.message}%0A%0AMi email: ${formData.email}`;
-                      window.open(`https://wa.me/50498765432?text=${whatsappMessage}`, "_blank");
-                      setFormData({ name: "", email: "", message: "" });
-                      setShowContactForm(false);
-                    }}
-                    className="contact-submit"
-                  >
-                    Enviar por WhatsApp 💬
-                  </button>
-                </div>
-              </div>
-            </AnimSection>
-          )}
-        </div>
-      </section>
-
-      {/* ========== FOOTER ========== */}
-      <footer className="footer">
-        <div className="footer-container">
-          <div className="footer-nav">
-            {navLinks.map(link => (
-              <button
-                key={link.id}
-                onClick={() => scrollTo(link.id)}
-                className="footer-link"
-              >
-                {link.label}
-              </button>
-            ))}
-          </div>
-          <p className="footer-text">
-            © 2026 TurismoHonduras · Agencia de Viajes · Todos los derechos reservados
+          <h1 className="ac-hero-title">
+            Ariel
+            <span>Construcciones</span>
+          </h1>
+          <p className="ac-hero-owner">
+            Fundada y dirigida por <strong>Ing. Ariel Rojas Torres</strong>
           </p>
+          <p className="ac-hero-desc">
+            Más de 15 años construyendo con excelencia. Desde pintura y cielos rasos hasta construcción completa — soluciones integrales para proyectos residenciales, comerciales e industriales.
+          </p>
+          <div className="ac-hero-actions">
+            <button className="ac-btn-primary" onClick={() => scrollTo("servicios")}>Ver Servicios</button>
+            <button className="ac-btn-outline" onClick={() => scrollTo("contacto")}>Cotizar Proyecto</button>
+          </div>
+          <div className="ac-hero-stats">
+            {[
+              { num: "15+", label: "Años de Experiencia" },
+              { num: "300+", label: "Proyectos Entregados" },
+              { num: "100%", label: "Calidad Garantizada" },
+              { num: "9", label: "Servicios Especializados" },
+            ].map(s => (
+              <div key={s.label}>
+                <div className="ac-stat-num">{s.num}</div>
+                <div className="ac-stat-label">{s.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* SERVICIOS */}
+      <section id="servicios" className="ac-section ac-services-bg">
+        <div className="ac-section-header">
+          <div className="ac-section-tag">
+            <div className="ac-divider" style={{ margin: 0 }} />
+            <span>Nuestros Servicios</span>
+          </div>
+          <h2 className="ac-section-title">Todo en <em>Construcción</em></h2>
+          <p className="ac-section-desc">Ofrecemos una amplia gama de servicios especializados con materiales de primera calidad y mano de obra certificada.</p>
+        </div>
+        <div className="ac-services-grid">
+          {services.map((svc) => (
+            <div key={svc.num} className="ac-service-card">
+              <div className="ac-service-num">{svc.num}</div>
+              <span className="ac-service-icon">{svc.icon}</span>
+              <h3 className="ac-service-name">{svc.name}</h3>
+              <p className="ac-service-desc">{svc.desc}</p>
+              <div className="ac-service-items">
+                {svc.tags.map(t => <span key={t} className="ac-service-tag">{t}</span>)}
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* PROYECTOS */}
+      <section id="proyectos" className="ac-section">
+        <div className="ac-section-header">
+          <div className="ac-section-tag">
+            <div className="ac-divider" style={{ margin: 0 }} />
+            <span>Portafolio</span>
+          </div>
+          <h2 className="ac-section-title">Proyectos <em>Realizados</em></h2>
+          <p className="ac-section-desc">Cada obra refleja nuestro compromiso con la excelencia, puntualidad y acabados de primer nivel.</p>
+        </div>
+        <div className="ac-projects-grid">
+          {projects.map((p) => (
+            <div key={p.title} className={`ac-project-card ${p.featured ? "featured" : ""}`}>
+              <img src={p.img} alt={p.title} className="ac-project-img" />
+              <div className="ac-project-overlay">
+                <div className="ac-project-label">{p.label}</div>
+                <div className="ac-project-title">{p.title}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* NOSOTROS */}
+      <section id="nosotros" className="ac-section ac-services-bg">
+        <div className="ac-about-grid">
+          <div className="ac-about-img-wrapper">
+            <img
+              src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=800&q=80"
+              alt="Ariel Construcciones equipo"
+              className="ac-about-img"
+            />
+            <div className="ac-about-img-accent" />
+            <div className="ac-about-badge">+15 AÑOS DE EXPERIENCIA</div>
+          </div>
+          <div>
+            <div className="ac-section-tag">
+              <div className="ac-divider" style={{ margin: 0 }} />
+              <span>Sobre Nosotros</span>
+            </div>
+            <h2 className="ac-section-title">Construimos con <em>Pasión</em></h2>
+            <p style={{ fontSize: "16px", color: "var(--gray-light)", lineHeight: "1.8", fontWeight: 300, marginBottom: "16px" }}>
+              <strong style={{ color: "var(--gold)" }}>Ariel Rojas Torres</strong> fundó Ariel Construcciones con una visión clara: ofrecer servicios de construcción de alta calidad a precios justos, con honestidad y compromiso en cada proyecto.
+            </p>
+            <p style={{ fontSize: "15px", color: "var(--gray)", lineHeight: "1.8", fontWeight: 300, marginBottom: "40px" }}>
+              Desde pequeñas remodelaciones hasta grandes obras civiles, nuestro equipo de profesionales certificados garantiza resultados que superan las expectativas de nuestros clientes.
+            </p>
+            <div className="ac-about-values">
+              {[
+                { name: "Calidad", desc: "Materiales certificados y mano de obra experta en cada proyecto." },
+                { name: "Puntualidad", desc: "Cumplimos los plazos acordados sin sacrificar la calidad." },
+                { name: "Transparencia", desc: "Presupuestos claros y comunicación directa en todo momento." },
+                { name: "Garantía", desc: "Respaldamos nuestro trabajo con garantía post-entrega." },
+              ].map(v => (
+                <div key={v.name} className="ac-value-item">
+                  <div className="ac-value-name">{v.name}</div>
+                  <div className="ac-value-desc">{v.desc}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CONTACTO */}
+      <section id="contacto" className="ac-section ac-contact-bg">
+        <div className="ac-section-header">
+          <div className="ac-section-tag">
+            <div className="ac-divider" style={{ margin: 0 }} />
+            <span>Contacto</span>
+          </div>
+          <h2 className="ac-section-title">Cotiza tu <em>Proyecto</em></h2>
+          <p className="ac-section-desc">Cuéntanos sobre tu proyecto y te damos una cotización sin compromiso. Atendemos en toda la región.</p>
+        </div>
+        <div className="ac-contact-grid">
+          <div className="ac-contact-info">
+            {[
+              { icon: "📱", label: "WhatsApp / Teléfono", value: "+504 9876-5432" },
+              { icon: "📧", label: "Correo Electrónico", value: "info@arielconstrucciones.com" },
+              { icon: "📍", label: "Ubicación", value: "Tegucigalpa, Honduras" },
+              { icon: "🕐", label: "Horario de Atención", value: "Lunes – Sábado: 7:00 AM – 6:00 PM" },
+            ].map(c => (
+              <div key={c.label} className="ac-contact-item">
+                <div className="ac-contact-icon-box">{c.icon}</div>
+                <div>
+                  <div className="ac-contact-label">{c.label}</div>
+                  <div className="ac-contact-value">{c.value}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="ac-form">
+            <input className="ac-input" placeholder="Tu nombre completo" value={formData.name}
+              onChange={e => setFormData({ ...formData, name: e.target.value })} />
+            <input className="ac-input" placeholder="Número de teléfono" value={formData.phone}
+              onChange={e => setFormData({ ...formData, phone: e.target.value })} />
+            <select className="ac-input" value={formData.service}
+              onChange={e => setFormData({ ...formData, service: e.target.value })}
+              style={{ cursor: "pointer" }}>
+              <option value="">— Selecciona un servicio —</option>
+              {services.map(s => <option key={s.name} value={s.name}>{s.name}</option>)}
+            </select>
+            <textarea className="ac-textarea" placeholder="Describe tu proyecto: ¿Qué necesitas? ¿Dónde? ¿Cuándo?"
+              value={formData.message}
+              onChange={e => setFormData({ ...formData, message: e.target.value })} />
+            <button className="ac-btn-primary" onClick={sendWhatsApp}>
+              Enviar por WhatsApp 💬
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* FOOTER */}
+      <footer className="ac-footer">
+        <div>
+          <div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "18px", letterSpacing: "2px", marginBottom: "4px" }}>
+            Ariel <span style={{ color: "var(--gold)" }}>Construcciones</span>
+          </div>
+          <div className="ac-footer-text">Ariel Rojas Torres · © 2026 · Todos los derechos reservados</div>
+        </div>
+        <div className="ac-footer-links">
+          {navLinks.map(({ id, label }) => (
+            <button key={id} onClick={() => scrollTo(id)}>{label}</button>
+          ))}
         </div>
       </footer>
     </div>

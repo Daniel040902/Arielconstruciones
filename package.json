@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
- "homepage": "https://Daniel040902.github.io/catalogo-viajes",
+ "homepage": "https://Daniel040902.github.io/Arielconstruciones",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
