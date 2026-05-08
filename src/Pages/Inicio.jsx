@@ -227,7 +227,96 @@ const style = `
   .ac-hero-content {
     position: relative;
     z-index: 2;
-    max-width: 700px;
+    max-width: 600px;
+  }
+
+  .ac-hero-image-wrap {
+    position: relative;
+    z-index: 2;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-left: 40px;
+  }
+
+  .ac-hero-image {
+    width: 450px;
+    height: 500px;
+    object-fit: cover;
+    border: 4px solid var(--gold);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+    position: relative;
+    z-index: 2;
+    filter: grayscale(10%) brightness(1.02);
+  }
+
+  .ac-hero-image-ring {
+    position: absolute;
+    width: 490px;
+    height: 540px;
+    border: 1px solid rgba(201,168,76,0.3);
+    top: 50%;
+    left: calc(50% + 20px);
+    transform: translate(-50%, -50%);
+    z-index: 1;
+  }
+
+  .ac-hero-image-ring2 {
+    position: absolute;
+    width: 530px;
+    height: 580px;
+    border: 1px dashed rgba(201,168,76,0.2);
+    top: 50%;
+    left: calc(50% + 20px);
+    transform: translate(-50%, -50%);
+    z-index: 1;
+  }
+
+  @media (max-width: 1024px) {
+    .ac-hero-image-wrap {
+      padding-left: 0;
+      margin-top: 40px;
+    }
+    .ac-hero-image {
+      width: 280px;
+      height: 320px;
+    }
+    .ac-hero-image-ring { display: none; }
+    .ac-hero-image-ring2 { display: none; }
+  }
+
+  @media (max-width: 768px) {
+    .ac-hero {
+      flex-direction: column;
+      padding: 100px 5% 60px;
+      min-height: auto;
+    }
+    .ac-hero-content {
+      max-width: 100%;
+      text-align: center;
+    }
+    .ac-eyebrow {
+      justify-content: center;
+    }
+    .ac-hero-actions {
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .ac-hero-image-wrap {
+      margin-top: 30px;
+      padding-left: 0;
+    }
+    .ac-hero-image {
+      width: 240px;
+      height: 280px;
+    }
+    .ac-hero-number {
+      display: none;
+    }
+    .ac-hero-accent {
+      display: none;
+    }
   }
 
   .ac-eyebrow {
@@ -419,7 +508,6 @@ const style = `
 
   .ac-service-card {
     background: var(--white);
-    padding: 40px 32px;
     position: relative;
     cursor: pointer;
     transition: all 0.4s ease;
@@ -460,6 +548,52 @@ const style = `
     width: 100%;
   }
 
+
+  .ac-service-img-wrap {
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .ac-service-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+
+  .ac-service-card:hover .ac-service-img {
+    transform: scale(1.08);
+  }
+
+  .ac-service-img-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.1) 0%, transparent 50%);
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    padding: 12px;
+  }
+
+  .ac-service-img-overlay .ac-service-icon {
+    font-size: 28px;
+    margin: 0;
+    background: rgba(255,255,255,0.9);
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  }
+
+  .ac-service-body {
+    padding: 24px 28px 32px;
+  }
+
+
   .ac-service-num {
     font-family: 'Bebas Neue', sans-serif;
     font-size: 48px;
@@ -469,17 +603,12 @@ const style = `
     letter-spacing: 2px;
   }
 
-  .ac-service-icon {
-    font-size: 32px;
-    margin-bottom: 20px;
-    display: block;
-  }
 
   .ac-service-name {
     font-family: 'Bebas Neue', sans-serif;
     font-size: 22px;
     letter-spacing: 2px;
-    margin-bottom: 12px;
+    margin-bottom: 8px;
     color: var(--dark);
   }
 
@@ -769,12 +898,39 @@ const style = `
 
   /* MOBILE */
   @media (max-width: 768px) {
-    .ac-nav, .ac-cta-btn, .ac-whatsapp-hero { display: none; }
-    .ac-hero-stats { gap: 24px; flex-wrap: wrap; }
+    .ac-nav { display: none; }
+    .ac-header { padding: 0 4%; }
+    .ac-logo-text { font-size: 18px; }
+    .ac-hero-stats { gap: 16px; flex-wrap: wrap; justify-content: center; }
+    .ac-stat-num { font-size: 32px; }
     .ac-projects-grid { grid-template-columns: 1fr; }
     .ac-project-card.featured { grid-row: auto; }
-    .ac-about-grid, .ac-contact-grid { grid-template-columns: 1fr; gap: 40px; }
-    .ac-footer { flex-direction: column; text-align: center; }
+    .ac-about-grid, .ac-contact-grid { grid-template-columns: 1fr; gap: 32px; }
+    .ac-about-values { grid-template-columns: 1fr; }
+    .ac-section { padding: 60px 4%; }
+    .ac-section-header { margin-bottom: 40px; }
+    .ac-services-grid { grid-template-columns: 1fr; }
+    .ac-service-img-wrap { height: 180px; }
+    .ac-footer { flex-direction: column; text-align: center; gap: 12px; }
+    .ac-footer-links { flex-wrap: wrap; justify-content: center; gap: 16px; }
+    .ac-hero-owner { font-size: 14px; }
+    .ac-hero-desc { font-size: 15px; }
+    .ac-about-img-accent { display: none; }
+    .ac-about-badge { left: 8px; top: 8px; font-size: 12px; padding: 10px 16px; }
+    .ac-btn-primary, .ac-whatsapp-hero { padding: 14px 24px; font-size: 12px; }
+    .ac-contact-info { gap: 20px; }
+    .ac-hero-title { font-size: clamp(40px, 12vw, 56px); }
+  }
+
+  @media (max-width: 480px) {
+    .ac-hero-image { width: 200px; height: 240px; }
+    .ac-hero-stats { gap: 12px; }
+    .ac-stat-num { font-size: 26px; }
+    .ac-stat-label { font-size: 10px; }
+    .ac-service-img-wrap { height: 160px; }
+    .ac-service-body { padding: 16px 18px 24px; }
+    .ac-btn-primary, .ac-whatsapp-hero { padding: 12px 20px; font-size: 11px; letter-spacing: 1px; }
+    .ac-input, .ac-textarea { padding: 12px 16px; font-size: 13px; }
   }
 `;
 
@@ -785,6 +941,7 @@ const services = [
     name: "Pintura",
     desc: "Acabados de alta calidad en interior y exterior. Pintura lisa, texturizada, anticorrosiva y decorativa para todo tipo de superficies.",
     tags: ["Interior", "Exterior", "Texturada", "Anticorrosiva"],
+    img: "https://images.unsplash.com/photo-1562259929-b4e1fd3aef09?w=600&q=80",
   },
   {
     num: "02",
@@ -792,6 +949,7 @@ const services = [
     name: "Cielo Raso",
     desc: "Instalación profesional de cielos rasos en gypsum, PVC, y materiales compuestos. Diseños planos, con moldurados y coffered.",
     tags: ["Gypsum", "PVC", "Moldurado", "Coffered"],
+    img: "https://images.unsplash.com/photo-1618220179428-22790b461013?w=600&q=80",
   },
   {
     num: "03",
@@ -799,6 +957,7 @@ const services = [
     name: "Repello & Fino",
     desc: "Aplicación de repello y fino de paredes con mezclas balanceadas para superficies lisas y uniformes, listas para pintar.",
     tags: ["Repello", "Fino", "Afinado", "Nivelación"],
+    img: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=600&q=80",
   },
   {
     num: "04",
@@ -806,6 +965,7 @@ const services = [
     name: "Divisiones & Tabiques",
     desc: "Construcción de tabiques en gypsum, vidrio templado o PVC para espacios de oficina, comerciales o residenciales.",
     tags: ["Gypsum", "Vidrio", "PVC", "Oficinas"],
+    img: "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=600&q=80",
   },
   {
     num: "05",
@@ -813,6 +973,7 @@ const services = [
     name: "Construcción General",
     desc: "Obra civil desde cero: cimientos, levantado de paredes, columnas, vigas y estructura completa con materiales certificados.",
     tags: ["Cimientos", "Paredes", "Columnas", "Vigas"],
+    img: "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=600&q=80",
   },
   {
     num: "06",
@@ -820,6 +981,7 @@ const services = [
     name: "Instalaciones",
     desc: "Instalaciones eléctricas, hidráulicas y sanitarias con técnicos certificados para proyectos residenciales y comerciales.",
     tags: ["Eléctrica", "Hidráulica", "Sanitaria", "Certificada"],
+    img: "https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=600&q=80",
   },
   {
     num: "07",
@@ -827,6 +989,7 @@ const services = [
     name: "Pisos & Revestimientos",
     desc: "Colocación de pisos cerámicos, porcelanato, madera y revestimiento de paredes para baños y cocinas.",
     tags: ["Cerámica", "Porcelanato", "Madera", "Baños"],
+    img: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&q=80",
   },
   {
     num: "08",
@@ -834,6 +997,7 @@ const services = [
     name: "Remodelaciones",
     desc: "Renovación integral de espacios residenciales y comerciales. Transformamos cualquier ambiente con calidad garantizada.",
     tags: ["Residencial", "Comercial", "Integral", "Garantizado"],
+    img: "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=600&q=80",
   },
   {
     num: "09",
@@ -841,6 +1005,7 @@ const services = [
     name: "Impermeabilización",
     desc: "Sistemas de impermeabilización en terrazas, losas y fundaciones para protección duradera contra filtraciones y humedad.",
     tags: ["Terrazas", "Losas", "Fundaciones", "Durable"],
+    img: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=600&q=80",
   },
 ];
 
@@ -927,6 +1092,7 @@ export default function ArielConstrucciones() {
         <div className="ac-hero-accent" />
         <div className="ac-hero-number">2009</div>
         <div className="ac-hero-content">
+          <div className="ac-divider" style={{ width: 60, height: 2, background: "var(--gold)", marginBottom: 24 }} />
           <div className="ac-eyebrow">
             <div className="ac-eyebrow-line" />
             <span className="ac-eyebrow-text">Empresa de Construcción Certificada</span>
@@ -939,7 +1105,7 @@ export default function ArielConstrucciones() {
             Fundada y dirigida por <strong>Ing. Ariel Rojas Torres</strong>
           </p>
           <p className="ac-hero-desc">
-            Más de 15 años construyendo con excelencia. Desde pintura y cielos rasos hasta construcción completa — soluciones integrales para proyectos residenciales, comerciales e industriales en toda Honduras.
+            Más de 15 años construyendo con excelencia. Desde pintura y cielos rasos hasta construcción completa — soluciones integrales para proyectos residenciales, comerciales e industriales en León, Nicaragua.
           </p>
           <div className="ac-hero-actions">
             <button className="ac-btn-primary" onClick={() => scrollTo("servicios")}>Ver Servicios</button>
@@ -960,6 +1126,11 @@ export default function ArielConstrucciones() {
             ))}
           </div>
         </div>
+        <div className="ac-hero-image-wrap">
+          <div className="ac-hero-image-ring2" />
+          <div className="ac-hero-image-ring" />
+          <img src="/Arielconstrucione.png" alt="Ing. Ariel Rojas Torres" className="ac-hero-image" />
+        </div>
       </section>
 
       {/* SERVICIOS */}
@@ -975,12 +1146,19 @@ export default function ArielConstrucciones() {
         <div className="ac-services-grid">
           {services.map((svc) => (
             <div key={svc.num} className="ac-service-card">
-              <div className="ac-service-num">{svc.num}</div>
-              <span className="ac-service-icon">{svc.icon}</span>
-              <h3 className="ac-service-name">{svc.name}</h3>
-              <p className="ac-service-desc">{svc.desc}</p>
-              <div className="ac-service-items">
-                {svc.tags.map(t => <span key={t} className="ac-service-tag">{t}</span>)}
+              <div className="ac-service-img-wrap">
+                <img src={svc.img} alt={svc.name} className="ac-service-img" />
+                <div className="ac-service-img-overlay">
+                  <span className="ac-service-icon">{svc.icon}</span>
+                </div>
+              </div>
+              <div className="ac-service-body">
+                <div className="ac-service-num">{svc.num}</div>
+                <h3 className="ac-service-name">{svc.name}</h3>
+                <p className="ac-service-desc">{svc.desc}</p>
+                <div className="ac-service-items">
+                  {svc.tags.map(t => <span key={t} className="ac-service-tag">{t}</span>)}
+                </div>
               </div>
             </div>
           ))}
@@ -1032,7 +1210,7 @@ export default function ArielConstrucciones() {
               <strong style={{ color: "var(--gold-dark)" }}>Ariel Rojas Torres</strong> fundó Ariel Construcciones con una visión clara: ofrecer servicios de construcción de alta calidad a precios justos, con honestidad y compromiso en cada proyecto.
             </p>
             <p style={{ fontSize: "15px", color: "var(--gray)", lineHeight: "1.8", fontWeight: 400, marginBottom: "40px" }}>
-              Desde pequeñas remodelaciones hasta grandes obras civiles, nuestro equipo de profesionales certificados garantiza resultados que superan las expectativas de nuestros clientes en toda Honduras.
+              Desde pequeñas remodelaciones hasta grandes obras civiles, nuestro equipo de profesionales certificados garantiza resultados que superan las expectativas de nuestros clientes en toda Nicaragua, León, El Sauce.
             </p>
             <div className="ac-about-values">
               {[
@@ -1059,14 +1237,14 @@ export default function ArielConstrucciones() {
             <span>Contacto</span>
           </div>
           <h2 className="ac-section-title">Cotiza tu <em>Proyecto</em></h2>
-          <p className="ac-section-desc">Cuéntanos sobre tu proyecto y te damos una cotización sin compromiso. Atendemos en toda Honduras.</p>
+          <p className="ac-section-desc">Cuéntanos sobre tu proyecto y te damos una cotización sin compromiso. Atendemos en toda Nicaragua, León, El Sauce.</p>
         </div>
         <div className="ac-contact-grid">
           <div className="ac-contact-info">
             {[
               { icon: "📱", label: "WhatsApp / Teléfono", value: "+504 5862-2708" },
               { icon: "📧", label: "Correo Electrónico", value: "info@arielconstrucciones.com" },
-              { icon: "📍", label: "Ubicación", value: "Honduras" },
+              { icon: "📍", label: "Ubicación", value: "León, Nicaragua" },
               { icon: "🕐", label: "Horario de Atención", value: "Lunes – Sábado: 7:00 AM – 6:00 PM" },
             ].map(c => (
               <div key={c.label} className="ac-contact-item">
