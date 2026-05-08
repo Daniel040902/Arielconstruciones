@@ -1129,7 +1129,7 @@ export default function ArielConstrucciones() {
         <div className="ac-hero-image-wrap">
           <div className="ac-hero-image-ring2" />
           <div className="ac-hero-image-ring" />
-          <img src="/Arielconstrucione.png" alt="Ing. Ariel Rojas Torres" className="ac-hero-image" />
+          <img src={`${import.meta.env.BASE_URL}Arielconstrucione.png`} alt="Ing. Ariel Rojas Torres" className="ac-hero-image" />
         </div>
       </section>
 
