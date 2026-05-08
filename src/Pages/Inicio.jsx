@@ -7,22 +7,24 @@ const style = `
     --gold: #C9A84C;
     --gold-light: #E8C97A;
     --gold-dark: #9B7A28;
-    --dark: #0D0D0D;
-    --dark2: #141414;
-    --dark3: #1C1C1C;
-    --dark4: #242424;
-    --gray: #555;
-    --gray-light: #888;
+    --dark: #1E1E1E;
+    --dark2: #2A2A2A;
+    --dark3: #353535;
+    --dark4: #404040;
+    --gray: #AAAAAA;
+    --gray-light: #CCCCCC;
     --white: #F5F0E8;
     --white2: #EDE8DC;
+    --bg-light: #E8E4D9;
+    --bg-card: #F2EFE8;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   body {
     font-family: 'Barlow', sans-serif;
-    background: var(--dark);
-    color: var(--white);
+    background: var(--bg-light);
+    color: var(--dark);
     overflow-x: hidden;
   }
 
@@ -39,8 +41,8 @@ const style = `
   }
 
   .ac-header.scrolled {
-    background: rgba(13,13,13,0.97);
-    border-bottom: 1px solid rgba(201,168,76,0.2);
+    background: rgba(232,228,217,0.97);
+    border-bottom: 1px solid rgba(201,168,76,0.3);
     backdrop-filter: blur(8px);
   }
 
@@ -67,16 +69,16 @@ const style = `
     font-family: 'Bebas Neue', sans-serif;
     font-size: 22px;
     letter-spacing: 2px;
-    color: var(--white);
+    color: var(--dark);
     line-height: 1;
   }
 
   .ac-logo-sub {
     font-size: 10px;
     letter-spacing: 3px;
-    color: var(--gold);
+    color: var(--gold-dark);
     text-transform: uppercase;
-    font-weight: 500;
+    font-weight: 600;
   }
 
   .ac-nav {
@@ -87,7 +89,7 @@ const style = `
   .ac-nav button {
     background: none;
     border: none;
-    color: var(--gray-light);
+    color: var(--gray);
     font-family: 'Barlow', sans-serif;
     font-size: 13px;
     font-weight: 600;
@@ -111,7 +113,7 @@ const style = `
   }
 
   .ac-nav button:hover, .ac-nav button.active {
-    color: var(--gold);
+    color: var(--gold-dark);
   }
 
   .ac-nav button:hover::after, .ac-nav button.active::after {
@@ -119,23 +121,53 @@ const style = `
   }
 
   .ac-cta-btn {
-    background: var(--gold);
-    color: var(--dark);
-    border: none;
+    background: var(--white);
+    color: var(--gold);
+    border: 1.5px solid var(--gold);
     font-family: 'Barlow', sans-serif;
     font-size: 12px;
     font-weight: 700;
     letter-spacing: 2px;
     text-transform: uppercase;
-    padding: 10px 24px;
+    padding: 10px 22px;
     cursor: pointer;
     transition: all 0.3s;
     clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
   }
 
   .ac-cta-btn:hover {
-    background: var(--gold-light);
-    transform: translateY(-1px);
+    background: var(--gold);
+    color: var(--white);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px rgba(201,168,76,0.35);
+  }
+
+  .ac-whatsapp-hero {
+    background: var(--white);
+    color: var(--gold);
+    border: 1.5px solid var(--gold);
+    font-family: 'Barlow', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 16px 36px;
+    cursor: pointer;
+    transition: all 0.3s;
+    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .ac-whatsapp-hero:hover {
+    background: var(--gold);
+    color: var(--white);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(201,168,76,0.35);
   }
 
   /* HERO */
@@ -146,26 +178,27 @@ const style = `
     position: relative;
     overflow: hidden;
     padding: 0 5%;
+    background: var(--bg-light);
   }
 
   .ac-hero-bg {
     position: absolute;
     inset: 0;
     background:
-      linear-gradient(135deg, rgba(201,168,76,0.04) 0%, transparent 50%),
+      linear-gradient(135deg, rgba(201,168,76,0.08) 0%, transparent 50%),
       repeating-linear-gradient(
         90deg,
         transparent,
         transparent 80px,
-        rgba(201,168,76,0.03) 80px,
-        rgba(201,168,76,0.03) 81px
+        rgba(201,168,76,0.05) 80px,
+        rgba(201,168,76,0.05) 81px
       ),
       repeating-linear-gradient(
         0deg,
         transparent,
         transparent 80px,
-        rgba(201,168,76,0.03) 80px,
-        rgba(201,168,76,0.03) 81px
+        rgba(201,168,76,0.05) 80px,
+        rgba(201,168,76,0.05) 81px
       );
   }
 
@@ -175,7 +208,7 @@ const style = `
     top: 0;
     width: 45%;
     height: 100%;
-    background: linear-gradient(135deg, transparent 0%, rgba(201,168,76,0.06) 100%);
+    background: linear-gradient(135deg, transparent 0%, rgba(201,168,76,0.1) 100%);
     clip-path: polygon(15% 0, 100% 0, 100% 100%, 0% 100%);
   }
 
@@ -185,7 +218,7 @@ const style = `
     bottom: 10%;
     font-family: 'Bebas Neue', sans-serif;
     font-size: 180px;
-    color: rgba(201,168,76,0.05);
+    color: rgba(201,168,76,0.1);
     line-height: 1;
     letter-spacing: -10px;
     user-select: none;
@@ -214,7 +247,7 @@ const style = `
     font-size: 12px;
     letter-spacing: 4px;
     text-transform: uppercase;
-    color: var(--gold);
+    color: var(--gold-dark);
     font-weight: 600;
   }
 
@@ -224,35 +257,36 @@ const style = `
     line-height: 0.95;
     letter-spacing: 3px;
     margin-bottom: 8px;
+    color: var(--dark);
   }
 
   .ac-hero-title span {
-    color: var(--gold);
+    color: var(--gold-dark);
     display: block;
   }
 
   .ac-hero-owner {
     font-size: 15px;
-    font-weight: 300;
+    font-weight: 400;
     font-style: italic;
-    color: var(--gray-light);
+    color: var(--gray);
     margin-bottom: 28px;
     letter-spacing: 1px;
   }
 
   .ac-hero-owner strong {
-    color: var(--white2);
+    color: var(--dark);
     font-style: normal;
-    font-weight: 600;
+    font-weight: 700;
   }
 
   .ac-hero-desc {
     font-size: 17px;
     line-height: 1.7;
-    color: var(--gray-light);
+    color: var(--gray);
     max-width: 520px;
     margin-bottom: 40px;
-    font-weight: 300;
+    font-weight: 400;
   }
 
   .ac-hero-actions {
@@ -284,8 +318,8 @@ const style = `
 
   .ac-btn-outline {
     background: transparent;
-    color: var(--white);
-    border: 1px solid rgba(255,255,255,0.2);
+    color: var(--dark);
+    border: 1px solid rgba(0,0,0,0.15);
     font-family: 'Barlow', sans-serif;
     font-size: 13px;
     font-weight: 600;
@@ -298,7 +332,7 @@ const style = `
 
   .ac-btn-outline:hover {
     border-color: var(--gold);
-    color: var(--gold);
+    color: var(--gold-dark);
   }
 
   .ac-hero-stats {
@@ -306,13 +340,13 @@ const style = `
     gap: 48px;
     margin-top: 56px;
     padding-top: 40px;
-    border-top: 1px solid rgba(255,255,255,0.07);
+    border-top: 1px solid rgba(0,0,0,0.1);
   }
 
   .ac-stat-num {
     font-family: 'Bebas Neue', sans-serif;
     font-size: 42px;
-    color: var(--gold);
+    color: var(--gold-dark);
     letter-spacing: 2px;
     line-height: 1;
   }
@@ -323,7 +357,7 @@ const style = `
     text-transform: uppercase;
     color: var(--gray);
     margin-top: 4px;
-    font-weight: 500;
+    font-weight: 600;
   }
 
   /* SECTION COMMON */
@@ -346,7 +380,7 @@ const style = `
     font-size: 11px;
     letter-spacing: 4px;
     text-transform: uppercase;
-    color: var(--gold);
+    color: var(--gold-dark);
     font-weight: 600;
   }
 
@@ -356,24 +390,25 @@ const style = `
     letter-spacing: 2px;
     line-height: 1;
     margin-bottom: 16px;
+    color: var(--dark);
   }
 
   .ac-section-title em {
-    color: var(--gold);
+    color: var(--gold-dark);
     font-style: normal;
   }
 
   .ac-section-desc {
     font-size: 16px;
-    color: var(--gray-light);
+    color: var(--gray);
     max-width: 560px;
     line-height: 1.7;
-    font-weight: 300;
+    font-weight: 400;
   }
 
   /* SERVICIOS */
   .ac-services-bg {
-    background: var(--dark2);
+    background: var(--bg-card);
   }
 
   .ac-services-grid {
@@ -383,19 +418,20 @@ const style = `
   }
 
   .ac-service-card {
-    background: var(--dark3);
+    background: var(--white);
     padding: 40px 32px;
     position: relative;
     cursor: pointer;
     transition: all 0.4s ease;
     overflow: hidden;
+    border: 1px solid rgba(0,0,0,0.05);
   }
 
   .ac-service-card::before {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(135deg, rgba(201,168,76,0.1), transparent);
+    background: linear-gradient(135deg, rgba(201,168,76,0.08), transparent);
     opacity: 0;
     transition: opacity 0.4s;
   }
@@ -405,8 +441,9 @@ const style = `
   }
 
   .ac-service-card:hover {
-    background: var(--dark4);
+    background: var(--bg-card);
     transform: translateY(-4px);
+    box-shadow: 0 20px 30px -15px rgba(0,0,0,0.1);
   }
 
   .ac-service-card::after {
@@ -426,7 +463,7 @@ const style = `
   .ac-service-num {
     font-family: 'Bebas Neue', sans-serif;
     font-size: 48px;
-    color: rgba(201,168,76,0.15);
+    color: rgba(201,168,76,0.25);
     line-height: 1;
     margin-bottom: 16px;
     letter-spacing: 2px;
@@ -443,14 +480,14 @@ const style = `
     font-size: 22px;
     letter-spacing: 2px;
     margin-bottom: 12px;
-    color: var(--white);
+    color: var(--dark);
   }
 
   .ac-service-desc {
     font-size: 14px;
-    color: var(--gray-light);
+    color: var(--gray);
     line-height: 1.7;
-    font-weight: 300;
+    font-weight: 400;
     margin-bottom: 16px;
   }
 
@@ -464,9 +501,9 @@ const style = `
     font-size: 11px;
     letter-spacing: 1px;
     padding: 4px 10px;
-    background: rgba(201,168,76,0.1);
-    color: var(--gold);
-    border: 1px solid rgba(201,168,76,0.2);
+    background: rgba(201,168,76,0.15);
+    color: var(--gold-dark);
+    border: 1px solid rgba(201,168,76,0.3);
     font-weight: 600;
   }
 
@@ -494,18 +531,18 @@ const style = `
     height: 100%;
     object-fit: cover;
     transition: transform 0.6s ease;
-    filter: brightness(0.6);
+    filter: brightness(0.85);
   }
 
   .ac-project-card:hover .ac-project-img {
     transform: scale(1.05);
-    filter: brightness(0.5);
+    filter: brightness(0.75);
   }
 
   .ac-project-overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 60%);
+    background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 60%);
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
@@ -544,7 +581,7 @@ const style = `
     width: 100%;
     aspect-ratio: 3/4;
     object-fit: cover;
-    filter: grayscale(30%) brightness(0.8);
+    filter: grayscale(20%) brightness(1.02);
   }
 
   .ac-about-img-accent {
@@ -554,7 +591,7 @@ const style = `
     width: 60%;
     height: 60%;
     border: 2px solid var(--gold);
-    opacity: 0.3;
+    opacity: 0.5;
     pointer-events: none;
   }
 
@@ -587,7 +624,7 @@ const style = `
     font-weight: 700;
     letter-spacing: 1px;
     text-transform: uppercase;
-    color: var(--white);
+    color: var(--dark);
     margin-bottom: 4px;
   }
 
@@ -595,12 +632,12 @@ const style = `
     font-size: 13px;
     color: var(--gray);
     line-height: 1.5;
-    font-weight: 300;
+    font-weight: 400;
   }
 
   /* CONTACTO */
   .ac-contact-bg {
-    background: var(--dark2);
+    background: var(--bg-card);
   }
 
   .ac-contact-grid {
@@ -625,28 +662,29 @@ const style = `
   .ac-contact-icon-box {
     width: 48px;
     height: 48px;
-    background: rgba(201,168,76,0.1);
-    border: 1px solid rgba(201,168,76,0.3);
+    background: rgba(201,168,76,0.15);
+    border: 1px solid rgba(201,168,76,0.4);
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 20px;
     flex-shrink: 0;
+    color: var(--gold-dark);
   }
 
   .ac-contact-label {
     font-size: 11px;
     letter-spacing: 2px;
     text-transform: uppercase;
-    color: var(--gold);
+    color: var(--gold-dark);
     font-weight: 600;
     margin-bottom: 4px;
   }
 
   .ac-contact-value {
     font-size: 15px;
-    color: var(--white2);
-    font-weight: 400;
+    color: var(--dark);
+    font-weight: 500;
   }
 
   .ac-form {
@@ -656,9 +694,9 @@ const style = `
   }
 
   .ac-input, .ac-textarea {
-    background: var(--dark3);
-    border: 1px solid rgba(255,255,255,0.08);
-    color: var(--white);
+    background: var(--white);
+    border: 1px solid rgba(0,0,0,0.1);
+    color: var(--dark);
     font-family: 'Barlow', sans-serif;
     font-size: 14px;
     padding: 16px 20px;
@@ -673,7 +711,7 @@ const style = `
   }
 
   .ac-input::placeholder, .ac-textarea::placeholder {
-    color: var(--gray);
+    color: var(--gray-light);
   }
 
   .ac-textarea {
@@ -683,8 +721,8 @@ const style = `
 
   /* FOOTER */
   .ac-footer {
-    background: var(--dark);
-    border-top: 1px solid rgba(255,255,255,0.06);
+    background: var(--bg-light);
+    border-top: 1px solid rgba(0,0,0,0.1);
     padding: 40px 5%;
     display: flex;
     align-items: center;
@@ -718,7 +756,7 @@ const style = `
   }
 
   .ac-footer-links button:hover {
-    color: var(--gold);
+    color: var(--gold-dark);
   }
 
   /* GOLD LINE */
@@ -731,7 +769,7 @@ const style = `
 
   /* MOBILE */
   @media (max-width: 768px) {
-    .ac-nav, .ac-cta-btn { display: none; }
+    .ac-nav, .ac-cta-btn, .ac-whatsapp-hero { display: none; }
     .ac-hero-stats { gap: 24px; flex-wrap: wrap; }
     .ac-projects-grid { grid-template-columns: 1fr; }
     .ac-project-card.featured { grid-row: auto; }
@@ -851,7 +889,14 @@ export default function ArielConstrucciones() {
 
   const sendWhatsApp = () => {
     const msg = `Hola Ariel Construcciones!%0A%0A*Nombre:* ${formData.name}%0A*Teléfono:* ${formData.phone}%0A*Servicio:* ${formData.service}%0A*Mensaje:* ${formData.message}`;
-    window.open(`https://wa.me/50498765432?text=${msg}`, "_blank");
+    window.open(`https://wa.me/50458622708?text=${msg}`, "_blank");
+  };
+
+  const openWhatsApp = (service = "") => {
+    const msg = service
+      ? `Hola Ariel Construcciones!%0A%0AQuisiera cotizar el servicio de: *${service}*`
+      : `Hola Ariel Construcciones!%0A%0AQuisiera cotizar un proyecto.`;
+    window.open(`https://wa.me/50458622708?text=${msg}`, "_blank");
   };
 
   return (
@@ -863,7 +908,7 @@ export default function ArielConstrucciones() {
         <div className="ac-logo" onClick={() => scrollTo("inicio")}>
           <div className="ac-logo-icon">🏗️</div>
           <div>
-            <div className="ac-logo-text">Ariel <span style={{ color: "var(--gold)" }}>Construcciones</span></div>
+            <div className="ac-logo-text">Ariel <span style={{ color: "var(--gold-dark)" }}>Construcciones</span></div>
             <div className="ac-logo-sub">Ariel Rojas Torres</div>
           </div>
         </div>
@@ -872,7 +917,8 @@ export default function ArielConstrucciones() {
             <button key={id} onClick={() => scrollTo(id)} className={activeNav === id ? "active" : ""}>{label}</button>
           ))}
         </nav>
-        <button className="ac-cta-btn" onClick={() => scrollTo("contacto")}>Cotizar</button>
+        <button className="ac-cta-btn" onClick={() => openWhatsApp()}>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>Cotizar</button>
       </header>
 
       {/* HERO */}
@@ -893,11 +939,12 @@ export default function ArielConstrucciones() {
             Fundada y dirigida por <strong>Ing. Ariel Rojas Torres</strong>
           </p>
           <p className="ac-hero-desc">
-            Más de 15 años construyendo con excelencia. Desde pintura y cielos rasos hasta construcción completa — soluciones integrales para proyectos residenciales, comerciales e industriales.
+            Más de 15 años construyendo con excelencia. Desde pintura y cielos rasos hasta construcción completa — soluciones integrales para proyectos residenciales, comerciales e industriales en toda Honduras.
           </p>
           <div className="ac-hero-actions">
             <button className="ac-btn-primary" onClick={() => scrollTo("servicios")}>Ver Servicios</button>
-            <button className="ac-btn-outline" onClick={() => scrollTo("contacto")}>Cotizar Proyecto</button>
+            <button className="ac-whatsapp-hero" onClick={() => openWhatsApp()}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>Cotizar Proyecto</button>
           </div>
           <div className="ac-hero-stats">
             {[
@@ -968,8 +1015,8 @@ export default function ArielConstrucciones() {
         <div className="ac-about-grid">
           <div className="ac-about-img-wrapper">
             <img
-              src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=800&q=80"
-              alt="Ariel Construcciones equipo"
+              src="https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=800&q=80"
+              alt="Equipo de construcción trabajando"
               className="ac-about-img"
             />
             <div className="ac-about-img-accent" />
@@ -978,14 +1025,14 @@ export default function ArielConstrucciones() {
           <div>
             <div className="ac-section-tag">
               <div className="ac-divider" style={{ margin: 0 }} />
-              <span>Sobre Nosotros</span>
+              <span>Equipo Ariel Construcciones</span>
             </div>
             <h2 className="ac-section-title">Construimos con <em>Pasión</em></h2>
-            <p style={{ fontSize: "16px", color: "var(--gray-light)", lineHeight: "1.8", fontWeight: 300, marginBottom: "16px" }}>
-              <strong style={{ color: "var(--gold)" }}>Ariel Rojas Torres</strong> fundó Ariel Construcciones con una visión clara: ofrecer servicios de construcción de alta calidad a precios justos, con honestidad y compromiso en cada proyecto.
+            <p style={{ fontSize: "16px", color: "var(--gray)", lineHeight: "1.8", fontWeight: 400, marginBottom: "16px" }}>
+              <strong style={{ color: "var(--gold-dark)" }}>Ariel Rojas Torres</strong> fundó Ariel Construcciones con una visión clara: ofrecer servicios de construcción de alta calidad a precios justos, con honestidad y compromiso en cada proyecto.
             </p>
-            <p style={{ fontSize: "15px", color: "var(--gray)", lineHeight: "1.8", fontWeight: 300, marginBottom: "40px" }}>
-              Desde pequeñas remodelaciones hasta grandes obras civiles, nuestro equipo de profesionales certificados garantiza resultados que superan las expectativas de nuestros clientes.
+            <p style={{ fontSize: "15px", color: "var(--gray)", lineHeight: "1.8", fontWeight: 400, marginBottom: "40px" }}>
+              Desde pequeñas remodelaciones hasta grandes obras civiles, nuestro equipo de profesionales certificados garantiza resultados que superan las expectativas de nuestros clientes en toda Honduras.
             </p>
             <div className="ac-about-values">
               {[
@@ -1012,14 +1059,14 @@ export default function ArielConstrucciones() {
             <span>Contacto</span>
           </div>
           <h2 className="ac-section-title">Cotiza tu <em>Proyecto</em></h2>
-          <p className="ac-section-desc">Cuéntanos sobre tu proyecto y te damos una cotización sin compromiso. Atendemos en toda la región.</p>
+          <p className="ac-section-desc">Cuéntanos sobre tu proyecto y te damos una cotización sin compromiso. Atendemos en toda Honduras.</p>
         </div>
         <div className="ac-contact-grid">
           <div className="ac-contact-info">
             {[
-              { icon: "📱", label: "WhatsApp / Teléfono", value: "+504 9876-5432" },
+              { icon: "📱", label: "WhatsApp / Teléfono", value: "+504 5862-2708" },
               { icon: "📧", label: "Correo Electrónico", value: "info@arielconstrucciones.com" },
-              { icon: "📍", label: "Ubicación", value: "Tegucigalpa, Honduras" },
+              { icon: "📍", label: "Ubicación", value: "Honduras" },
               { icon: "🕐", label: "Horario de Atención", value: "Lunes – Sábado: 7:00 AM – 6:00 PM" },
             ].map(c => (
               <div key={c.label} className="ac-contact-item">
@@ -1055,8 +1102,8 @@ export default function ArielConstrucciones() {
       {/* FOOTER */}
       <footer className="ac-footer">
         <div>
-          <div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "18px", letterSpacing: "2px", marginBottom: "4px" }}>
-            Ariel <span style={{ color: "var(--gold)" }}>Construcciones</span>
+          <div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "18px", letterSpacing: "2px", marginBottom: "4px", color: "var(--dark)" }}>
+            Ariel <span style={{ color: "var(--gold-dark)" }}>Construcciones</span>
           </div>
           <div className="ac-footer-text">Ariel Rojas Torres · © 2026 · Todos los derechos reservados</div>
         </div>
